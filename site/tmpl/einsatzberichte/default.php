@@ -8,7 +8,9 @@
  * @license     GNU General Public License version 3; see LICENSE
  */
 
+use Joomla\CMS\Language\Text;
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 ?>
-<h2><?= JText::_('COM_BLAULICHTMONITOR_MSG_TITLE') ?></h2>
+<h2><?= Text::_('COM_BLAULICHTMONITOR_MSG_TITLE') ?></h2>
