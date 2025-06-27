@@ -24,11 +24,10 @@ class DisplayController extends BaseController
 
     public function display($cachable = false, $urlparams = array())
     {
-        // NEW DECLARATION => https://api.joomla.org/cms-5/deprecated.html
-        //$app = Factory::getApplication();
-        //$document = $app->getDocument();
-        $document = Factory::getDocument();
-        //
+        /** @var \Joomla\CMS\Application\CMSApplication $app */
+        //There was an intelephense error: getDocument() was an unknown method
+        $app = Factory::getApplication();
+        $document = $app->getDocument();
         $viewName = $this->input->getCmd('view', 'login');
         $viewFormat = $document->getType();
 
