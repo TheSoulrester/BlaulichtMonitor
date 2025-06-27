@@ -11,7 +11,7 @@
     <copyright>Alexander Gropp</copyright>
     <license>GPL v3</license>
     <!--  The version string is recorded in the components table -->
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <!-- The description is optional and defaults to the name -->
     <description>
         Eine Einsatzverwaltung für Blaulichtorganisationen für das Joomla! CMS.
@@ -31,9 +31,14 @@
     <namespace path="src/">AlexanderGropp\Component\BlaulichtMonitor</namespace>
 
     <files folder="site/">
+        <folder>language</folder>
         <folder>src</folder>
         <folder>tmpl</folder>
     </files>
+
+    <languages>
+        <language tag="en-GB">site/language/en-GB/en-GB.com_blaulichtmonitor.ini</language>
+    </languages>
 
     <administration>
         <!-- The link that will appear in the Admin panel's "Components" menu -->
@@ -41,10 +46,16 @@
         <!-- List of files and folders to copy. Note the 'folder' attribute.
              This is the name of the folder in your component package to copy FROM -->
         <files folder="admin/">
+            <folder>language</folder>
             <folder>services</folder>
             <folder>src</folder>
             <folder>tmpl</folder>
         </files>
+
+        <languages>
+            <language tag="en-GB">admin/language/en-GB/en-GB.com_blaulichtmonitor.ini</language>
+            <language tag="en-GB">admin/language/en-GB/en-GB.com_blaulichtmonitor.sys.ini</language>
+        </languages>
     </administration>
 
 </extension>

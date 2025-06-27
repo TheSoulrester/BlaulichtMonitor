@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="Einsatzberichte">
-        <message><![CDATA[My first Joomla! page]]></message>
+    <layout title="COM_BLAULICHTMONITOR_MENU_TITLE">
+        <message><![CDATA[COM_BLAULICHTMONITOR_MENU_DESC]]></message>
     </layout>
 </metadata>

@@ -11,4 +11,4 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted Access');
 ?>
-<h2>Hello world!</h2>
+<h2><?= JText::_('COM_BLAULICHTMONITOR_MSG_TITLE') ?></h2>
