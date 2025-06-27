@@ -24,14 +24,13 @@ class DisplayController extends BaseController
 
     public function display($cachable = false, $urlparams = array())
     {
-        /** @var \Joomla\CMS\Application\CMSApplication $app */
-        //There was an intelephense error: getDocument() was an unknown method
         $app = Factory::getApplication();
         $document = $app->getDocument();
         $viewName = $this->input->getCmd('view', 'login');
         $viewFormat = $document->getType();
 
         $view = $this->getView($viewName, $viewFormat);
+        $view->setModel($this->getModel('Message'), true);
 
         $view->document = $document;
         $view->display();

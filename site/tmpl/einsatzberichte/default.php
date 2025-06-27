@@ -14,3 +14,5 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die('Restricted Access');
 ?>
 <h2><?= Text::_('COM_BLAULICHTMONITOR_MSG_TITLE') ?></h2>
+
+<p><?= $this->getModel()->getItem()->message; ?></p>
