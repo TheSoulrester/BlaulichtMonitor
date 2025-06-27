@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <!-- 'version' attribute for extension tag is no longer used -->
+
+    <name>BlaulichtMonitor</name>
+    <!-- The following elements are optional and free of formatting constraints -->
+    <creationDate>Juni 2025</creationDate>
+    <!-- Dummy author, feel free to replace anywhere you see it-->
+    <author>Alexander Gropp</author>
+    <authorUrl>https://agr0pp.de</authorUrl>
+    <copyright>Alexander Gropp</copyright>
+    <license>GPL v3</license>
+    <!--  The version string is recorded in the components table -->
+    <version>0.0.1</version>
+    <!-- The description is optional and defaults to the name -->
+    <description>
+        Eine Einsatzverwaltung für Blaulichtorganisationen für das Joomla! CMS.
+    </description>
+
+    <!-- This is the PHP namespace under which the extension's
+    code is organised. It should follow this format:
+
+    Vendor\Component\ComponentName
+
+    "Vendor" can be your company or your own name
+
+    The "ComponentName" section MUST match the name used
+    everywhere else for your component. Whatever the name of
+    this XML file is, the namespace must match (ignoring CamelCase).
+    -->
+    <namespace path="src/">AlexanderGropp\Component\BlaulichtMonitor</namespace>
+
+    <administration>
+        <!-- The link that will appear in the Admin panel's "Components" menu -->
+        <menu link="index.php?option=com_blaulichtmonitor">BlaulichtMonitor</menu>
+        <!-- List of files and folders to copy. Note the 'folder' attribute.
+             This is the name of the folder in your component package to copy FROM -->
+        <files folder="admin/">
+            <folder>services</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+    </administration>
+
+</extension>
