@@ -11,7 +11,7 @@
     <copyright>Alexander Gropp</copyright>
     <license>GPL v3</license>
     <!--  The version string is recorded in the components table -->
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <!-- The description is optional and defaults to the name -->
     <description>
         Eine Einsatzverwaltung für Blaulichtorganisationen für das Joomla! CMS.
