@@ -27,10 +27,5 @@ class DisplayController extends BaseController
      *
      * @var string
      */
-    protected $default_view = 'Einsatzberichte';
-
-    public function display($cachable = false, $urlparams = array())
-    {
-        return parent::display($cachable, $urlparams);
-    }
+    protected $default_view = 'cpanel';
 }
