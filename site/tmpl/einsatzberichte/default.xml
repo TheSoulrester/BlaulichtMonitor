@@ -3,16 +3,4 @@
     <layout title="COM_BLAULICHTMONITOR_MENU_TITLE">
         <message><![CDATA[COM_BLAULICHTMONITOR_MENU_DESC]]></message>
     </layout>
-    <fields name="request">
-        <fieldset name="request">
-            <field  name="greetingType"
-                    type="list"
-                    label="COM_HELLOWORLD_MENU_HELLO_WORLD_PARAM_LABEL"
-                    description="COM_HELLOWORLD_MENU_HELLO_WORLD_PARAM_DESC"
-                    default="1">
-                <option value="1"><![CDATA[COM_HELLOWORLD_MENU_HELLO_WORLD_PARAM_VALUE_HELLO]]></option>
-                <option value="2"><![CDATA[COM_HELLOWORLD_MENU_HELLO_WORLD_PARAM_VALUE_GOODBYE]]></option>
-            </field>
-        </fieldset>
-    </fields>
 </metadata>

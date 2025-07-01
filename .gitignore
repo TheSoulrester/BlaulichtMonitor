@@ -703,3 +703,12 @@
 /README.txt
 /robots.txt.dist
 /web.config.txt
+/vendor
+composer.json
+composer.lock
+create-mock-customers.php
+template-create-mock-customers.php
+/data
+site/tmpl/.DS_Store
+.DS_Store
+.DS_Store

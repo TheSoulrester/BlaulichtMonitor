@@ -1,0 +1,14 @@
+.cards {
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+.card {
+  padding: 1rem;
+}
+.meta {
+  color: #666;
+  font-size: 0.8rem;
+}
+#einsaetze-id {
+  text-align: right;
+}

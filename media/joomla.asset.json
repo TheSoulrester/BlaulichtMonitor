@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_blaulichtmonitor",
+  "version": "1.0.0",
+  "description": "Simple Blue Light Operations Manager component assets",
+  "license": "GPL-2.0-or-later",
+  "namespace": "AlexanderGropp\\component\\BlaulichtMonitor",
+  "assets": [
+    {
+      "name": "com_blaulichtmonitor.einsatzberichte",
+      "type": "style",
+      "uri": "com_blaulichtmonitor/einsatzberichte.css"
+    }
+  ]
+}
