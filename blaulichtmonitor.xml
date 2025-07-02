@@ -10,7 +10,7 @@
     <version>0.0.10</version>
     <description>
         Eine Einsatzverwaltung für Blaulichtorganisationen für das Joomla! CMS.
-                                                                    <![CDATA[COM_SPM_DESCRIPTION]]>
+                <![CDATA[COM_SPM_DESCRIPTION]]>
     </description>
 
     <namespace path="src/">AlexanderGropp\Component\BlaulichtMonitor</namespace>
@@ -34,11 +34,11 @@
     <administration>
         <menu link="index.php?option=com_blaulichtmonitor" img="class:house-fire">COM_BLAULICHTMONITOR_MENU_BACKEND</menu>
         <submenu>
+            <menu link="option=com_blaulichtmonitor&amp;view=cpanel" img="default">COM_SPM_CPANEL</menu>
             <menu link="option=com_blaulichtmonitor&amp;view=einsatzberichte" img="default">COM_SPM_PROJECTS</menu>
         </submenu>
 
         <files folder="admin/">
-            <folder>scripts</folder>
             <folder>forms</folder>
             <folder>language</folder>
             <folder>services</folder>

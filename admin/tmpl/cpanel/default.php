@@ -21,13 +21,22 @@ $link = Route::_('index.php?option=com_blaulichtmonitor&task=display.migrate&' .
             <p class="card-text">
                 Hier kannst du die Daten aus der alten <code>eiko_</code>-Komponente in das neue Schema übernehmen.
             </p>
-            <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.migrate'); ?>" method="post" class="mt-3">
-                <?= HTMLHelper::_('form.token'); ?>
-                <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('Willst du wirklich die Migration starten?');">
-                    🔄 Migration starten
-                </button>
-            </form>
+            <div class="d-flex gap-2 mt-3">
+                <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.migrate'); ?>" method="post" class="mt-3">
+                    <?= HTMLHelper::_('form.token'); ?>
+                    <button type="submit" class="btn btn-warning"
+                        onclick="return confirm('Willst du wirklich die Migration starten?');">
+                        🔄 Migration starten
+                    </button>
+                </form>
+                <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.clean'); ?>" method="post" class="mt-3">
+                    <?= HTMLHelper::_('form.token'); ?>
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Willst du wirklich ALLE Daten der BlaulichtMonitor-Komponente löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!');">
+                        🧹 Alle Datenbankeinträge löschen
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
