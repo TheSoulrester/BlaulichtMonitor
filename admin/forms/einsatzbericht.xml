@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
+    <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title FROM #__blaulichtmonitor_einsatzkategorien ORDER BY title ASC" key_field="id" value_field="bezeichnung" required="true" />
     <field name="alarmierungszeit" type="text" label="COM_SPM_PROJECT_NAME" required="true" />
     <field name="beschreibung" type="text" label="COM_SPM_PROJECT_ALIAS" required="false" />
-    <field name="alarmierungszeit" type="text" label="COM_SPM_PROJECT_DESCRIPTION" required="true" />
-    <field name="beschreibung" type="text" label="COM_SPM_PROJECT_DEADLINE" required="false" />
     <field name="created_by" type="user" label="COM_SPM_PROJECT_CREATED_BY" filter="unset" />
 </form>

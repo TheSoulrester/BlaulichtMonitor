@@ -2,6 +2,9 @@
 
 namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\Controller;
 
+use AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service\MigrationService;
+
+
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -28,4 +31,15 @@ class DisplayController extends BaseController
      * @var string
      */
     protected $default_view = 'cpanel';
+
+    public function migrate(): void
+    {
+        $this->checkToken(); // oder checkToken('post'), je nachdem wie du aufrufst
+
+        $migrationService = new MigrationService();
+        $results = $migrationService->migrateEinsatzarten();
+
+        $this->app->enqueueMessage("Migration abgeschlossen:<br>" . implode('<br>', $results), 'message');
+        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+    }
 }

@@ -1,7 +1,7 @@
 -- === Tabelle: Alarmierungsarten ===
 CREATE  TABLE `#__blaulichtmonitor_alarmierungsarten` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-	bezeichnung          VARCHAR(255)    NOT NULL   ,
+	title          		 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
 	created_by           INT UNSIGNED      ,
 	modified             DATETIME       ,
@@ -11,7 +11,7 @@ CREATE  TABLE `#__blaulichtmonitor_alarmierungsarten` (
 -- === Tabelle: Dispo-Gruppen ===
 CREATE  TABLE `#__blaulichtmonitor_dispogruppen` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-	bezeichnung          VARCHAR(255)    NOT NULL   ,
+	title          		 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
 	created_by           INT UNSIGNED      ,
 	modified             DATETIME       ,
@@ -21,9 +21,9 @@ CREATE  TABLE `#__blaulichtmonitor_dispogruppen` (
 -- === Tabelle: Einsatzarten ===
 CREATE  TABLE `#__blaulichtmonitor_einsatzarten` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-	bezeichnung          VARCHAR(255)    NOT NULL   ,
+	title         		 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
 	modified_by          INT UNSIGNED
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
@@ -31,7 +31,7 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzarten` (
 -- === Tabelle: Einsatzkategorien ===
 CREATE  TABLE `#__blaulichtmonitor_einsatzkategorien` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-	bezeichnung          VARCHAR(255)    NOT NULL   ,
+	title      		     VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
 	created_by           INT UNSIGNED      ,
 	modified             DATETIME       ,
@@ -86,7 +86,7 @@ CREATE  TABLE `#__blaulichtmonitor_organisation` (
 CREATE  TABLE `#__blaulichtmonitor_einheiten` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	name                 VARCHAR(255)    NOT NULL   ,
-	standort_bezeichnung VARCHAR(255)       ,
+	standort_title 		 VARCHAR(255)       ,
 	standort_strasse     VARCHAR(255)       ,
 	standort_plz         VARCHAR(10)       ,
 	standort_ort         VARCHAR(255)       ,
@@ -104,6 +104,7 @@ CREATE  TABLE `#__blaulichtmonitor_einsaetze` (
 	alarmierungsart_id   INT UNSIGNED   NOT NULL   ,
 	einsatzart_id        INT UNSIGNED   NOT NULL   ,
 	einsatzkategorie_id  INT UNSIGNED   NOT NULL   ,
+	article_id           INT UNSIGNED DEFAULT (NULL)     ,
 	prioritaet           TINYINT       ,
 	einsatzort_id        INT UNSIGNED       ,
 	alarmierungszeit     DATETIME  DEFAULT (CURRENT_TIMESTAMP)  NOT NULL   ,
@@ -112,7 +113,6 @@ CREATE  TABLE `#__blaulichtmonitor_einsaetze` (
 	beschreibung         TEXT       ,
 	veroeffentlicht      TINYINT  DEFAULT (0)     ,
 	counter              INT UNSIGNED DEFAULT (0)     ,
-	article_id           INT UNSIGNED DEFAULT (NULL)     ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
 	created_by           INT UNSIGNED      ,
 	modified             DATETIME       ,
@@ -250,3 +250,7 @@ ALTER TABLE `#__blaulichtmonitor_einsatzleiter_zeitraum`
 -- === Fremdschlüssel für Fahrzeuge ===
 ALTER TABLE `#__blaulichtmonitor_fahrzeuge`
   ADD CONSTRAINT `fk_fahrzeuge_einheit` FOREIGN KEY (einheit_id) REFERENCES `#__blaulichtmonitor_einheiten`(id) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+-- === Fremdschlüssel für created_by ===
+ALTER TABLE `#__blaulichtmonitor_einsatzarten`
+  ADD CONSTRAINT `fk_created_by_einsatzarten` FOREIGN KEY (created_by) REFERENCES `#__users`(id) ON DELETE SET NULL ON UPDATE NO ACTION;
