@@ -3,9 +3,9 @@ CREATE  TABLE `#__blaulichtmonitor_alarmierungsarten` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	title          		 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Dispo-Gruppen ===
@@ -13,9 +13,9 @@ CREATE  TABLE `#__blaulichtmonitor_dispogruppen` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	title          		 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzarten ===
@@ -25,7 +25,7 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzarten` (
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
 	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzkategorien ===
@@ -33,9 +33,9 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzkategorien` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	title      		     VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzleiter ===
@@ -43,9 +43,9 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzleiter` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	name                 VARCHAR(255)    NOT NULL   ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzleiter-Zeiträume (Aktiv-Zeiten) ===
@@ -57,9 +57,9 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzleiter_zeitraum` (
 	bis                  DATE       ,
 	aktiv                TINYINT  DEFAULT (0)     ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzort (nur Straße/PLZ/Stadt) ===
@@ -85,17 +85,21 @@ CREATE  TABLE `#__blaulichtmonitor_organisation` (
 -- === Tabelle: Einheiten ===
 CREATE  TABLE `#__blaulichtmonitor_einheiten` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+	title      		     VARCHAR(255)    NOT NULL   ,
 	name                 VARCHAR(255)    NOT NULL   ,
+	url                  VARCHAR(1024)    NOT NULL   ,
+	beschreibung         TEXT       ,
 	standort_title 		 VARCHAR(255)       ,
 	standort_strasse     VARCHAR(255)       ,
 	standort_plz         VARCHAR(10)       ,
 	standort_ort         VARCHAR(255)       ,
 	dispogruppe_id       INT UNSIGNED      ,
     organisation_id      INT UNSIGNED      ,
+	ordering			 INT UNSIGNED      ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsätze (Haupttabelle) ===
@@ -114,9 +118,9 @@ CREATE  TABLE `#__blaulichtmonitor_einsaetze` (
 	veroeffentlicht      TINYINT  DEFAULT (0)     ,
 	counter              INT UNSIGNED DEFAULT (0)     ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Join-Tabelle: Einsatz <-> Einheiten ===
@@ -137,12 +141,12 @@ CREATE  TABLE `#__blaulichtmonitor_einsatz_presse` (
 	id                   INT UNSIGNED   NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	einsatz_id           INT UNSIGNED   NOT NULL   ,
 	url                  VARCHAR(1024)    NOT NULL   ,
-	titel                VARCHAR(255)       ,
+	title                VARCHAR(255)       ,
 	quelle               VARCHAR(255)       ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Tabelle: Einsatzbilder ===
@@ -155,9 +159,9 @@ CREATE  TABLE `#__blaulichtmonitor_einsatzbilder` (
 	fotograf             VARCHAR(255)       ,
 	quelle               VARCHAR(255)       ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Join-Tabelle: Einsatz <-> Einsatzleiter ===
@@ -174,10 +178,11 @@ CREATE  TABLE `#__blaulichtmonitor_fahrzeuge` (
 	beschreibung         TEXT       ,
 	bild                 VARCHAR(255)       ,
 	in_dienst            TINYINT  DEFAULT (1)  NOT NULL   ,
+	ordering			 INT UNSIGNED      ,
 	created              DATETIME  DEFAULT (CURRENT_TIMESTAMP)     ,
-	created_by           INT UNSIGNED      ,
+	created_by           INT      ,
 	modified             DATETIME       ,
-	modified_by          INT UNSIGNED
+	modified_by          INT
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
 -- === Join-Tabelle: Einsatz <-> Fahrzeuge ===
@@ -187,6 +192,7 @@ CREATE  TABLE `#__blaulichtmonitor_einsatz_fahrzeuge` (
 	CONSTRAINT `pk_#__blaulichtmonitor_einsatz_fahrzeuge` PRIMARY KEY ( einsatz_id, fahrzeug_id )
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
+/*
 -- === Fremdschlüssel: Einheiten ===
 ALTER TABLE `#__blaulichtmonitor_einheiten`
   ADD CONSTRAINT `fk_einheiten_dispogruppe` FOREIGN KEY (dispogruppe_id) REFERENCES `#__blaulichtmonitor_dispogruppen`(id) ON DELETE SET NULL ON UPDATE NO ACTION;
@@ -254,3 +260,10 @@ ALTER TABLE `#__blaulichtmonitor_fahrzeuge`
 -- === Fremdschlüssel für created_by ===
 ALTER TABLE `#__blaulichtmonitor_einsatzarten`
   ADD CONSTRAINT `fk_created_by_einsatzarten` FOREIGN KEY (created_by) REFERENCES `#__users`(id) ON DELETE SET NULL ON UPDATE NO ACTION;
+
+ALTER TABLE `#__blaulichtmonitor_einheiten`
+  ADD CONSTRAINT `fk_created_by_einheiten` FOREIGN KEY (created_by) REFERENCES `#__users`(id) ON DELETE SET NULL ON UPDATE NO ACTION;
+
+ALTER TABLE `#__blaulichtmonitor_einsatzkategorien`
+  ADD CONSTRAINT `fk_created_by_einsatzkategorien` FOREIGN KEY (created_by) REFERENCES `#__users`(id) ON DELETE SET NULL ON UPDATE NO ACTION;
+*/

@@ -36,6 +36,13 @@ $link = Route::_('index.php?option=com_blaulichtmonitor&task=display.migrate&' .
                         🧹 Alle Datenbankeinträge löschen
                     </button>
                 </form>
+                <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.droptables'); ?>" method="post" class="mt-3">
+                    <?= HTMLHelper::_('form.token'); ?>
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm('Willst du wirklich ALLE Tabellen der BlaulichtMonitor-Komponente löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!');">
+                        🗑️ Tabellen löschen
+                    </button>
+                </form>
             </div>
         </div>
     </div>

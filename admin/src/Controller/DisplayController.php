@@ -109,4 +109,52 @@ class DisplayController extends BaseController
 
         $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
     }
+
+    public function droptables(): void
+    {
+        $this->checkToken();
+
+        $db = \Joomla\CMS\Factory::getDbo();
+        $prefix = $db->getPrefix();
+
+        // Alle Tabellen der Komponente
+        $tables = [
+            'blaulichtmonitor_einsatz_fahrzeuge',
+            'blaulichtmonitor_einsatz_einheiten',
+            'blaulichtmonitor_einsatz_kurzbericht',
+            'blaulichtmonitor_einsatzleiter_einsatz',
+            'blaulichtmonitor_einsatz_presse',
+            'blaulichtmonitor_einsatzbilder',
+            'blaulichtmonitor_einsaetze',
+            'blaulichtmonitor_einheiten',
+            'blaulichtmonitor_fahrzeuge',
+            'blaulichtmonitor_einsatzleiter_zeitraum',
+            'blaulichtmonitor_einsatzleiter',
+            'blaulichtmonitor_alarmierungsarten',
+            'blaulichtmonitor_dispogruppen',
+            'blaulichtmonitor_einsatzarten',
+            'blaulichtmonitor_einsatzkategorien',
+            'blaulichtmonitor_einsatzort',
+            'blaulichtmonitor_kurzbericht',
+            'blaulichtmonitor_organisation'
+        ];
+
+        $errors = [];
+        foreach ($tables as $table) {
+            try {
+                $db->setQuery('DROP TABLE IF EXISTS `' . $prefix . $table . '`');
+                $db->execute();
+            } catch (\Exception $e) {
+                $errors[] = "Fehler beim Löschen von {$table}: " . $e->getMessage();
+            }
+        }
+
+        if (empty($errors)) {
+            $this->app->enqueueMessage('Alle Tabellen der BlaulichtMonitor-Komponente wurden gelöscht.', 'success');
+        } else {
+            $this->app->enqueueMessage('Einige Tabellen konnten nicht gelöscht werden:<br>' . implode('<br>', $errors), 'error');
+        }
+
+        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+    }
 }
