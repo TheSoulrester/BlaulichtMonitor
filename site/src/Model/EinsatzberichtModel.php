@@ -30,7 +30,7 @@ class EinsatzberichtModel extends BaseDatabaseModel
         $db = $this->getDatabase();
         $query = $db->getQuery(true);
         $query->select('*')
-            ->from($db->quoteName('#__blaulichtmonitor_einsaetze', 'a'))
+            ->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'))
             ->where($db->quoteName('a.id') . ' = ' . (int)
             $id);
         $db->setQuery($query);

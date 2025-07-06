@@ -29,7 +29,7 @@ $link = Route::_('index.php?option=com_blaulichtmonitor&task=display.migrate&' .
                         🔄 Migration starten
                     </button>
                 </form>
-                <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.clean'); ?>" method="post" class="mt-3">
+                <form action="<?= Route::_('index.php?option=com_blaulichtmonitor&task=display.cleantables'); ?>" method="post" class="mt-3">
                     <?= HTMLHelper::_('form.token'); ?>
                     <button type="submit" class="btn btn-danger"
                         onclick="return confirm('Willst du wirklich ALLE Daten der BlaulichtMonitor-Komponente löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!');">

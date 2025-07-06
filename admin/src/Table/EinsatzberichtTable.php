@@ -9,6 +9,6 @@ class EinsatzberichtTable extends Table
 {
     public function __construct(DatabaseDriver $db)
     {
-        parent::__construct('#__blaulichtmonitor_einsaetze', 'id', $db);
+        parent::__construct('#__blaulichtmonitor_einsatzberichte', 'id', $db);
     }
 }

@@ -20,7 +20,7 @@ class EinsatzberichteModel extends ListModel
         parent::__construct($config);
     }
 
-    protected function populateState($ordering = 'alarmierungszeit', $direction = 'ASC')
+    protected function populateState($ordering = 'alarmierungszeit', $direction = 'DESC')
     {
         $app = Factory::getApplication();
         $value = $app->input->get('limit', $app->get('list_limit', 0), 'uint');
@@ -45,7 +45,7 @@ class EinsatzberichteModel extends ListModel
                     $db->quoteName('a.beschreibung'),
                 ]
             )
-        )->from($db->quoteName('#__blaulichtmonitor_einsaetze', 'a'));
+        )->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'));
         $search = $this->getState('filter.search');
         if (!empty($search)) {
             $search = $db->quote('%' . str_replace(
@@ -61,7 +61,7 @@ class EinsatzberichteModel extends ListModel
         );
         $orderDirn = $this->state->get(
             'list.direction',
-            'ASC'
+            'DESC'
         );
         $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
         return $query;
