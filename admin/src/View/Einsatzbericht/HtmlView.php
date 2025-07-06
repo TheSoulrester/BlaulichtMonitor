@@ -38,7 +38,9 @@ class HtmlView extends BaseHtmlView
         $isNew = ($this->item->id == 0);
         $canDo = ContentHelper::getActions('com_blaulichtmonitor');
         $toolbar = Toolbar::getInstance();
-        ToolbarHelper::title(Text::_('COM_SPM_PROJECT_TITLE_' . ($isNew ? 'ADD' : 'EDIT')));
+        ToolbarHelper::title(
+            Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHT_TITLE_' . ($isNew ? 'ADD' : 'EDIT'))
+        );
         if ($canDo->get('core.create')) {
             if ($isNew) {
                 $toolbar->apply('einsatzbericht.save');

@@ -8,6 +8,7 @@ use AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service\MigrationSer
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Language\Text;
 
 /**
  * @package     Joomla.Administrator
@@ -27,27 +28,27 @@ class DisplayController extends BaseController
         $migrationService = new MigrationService();
         $results = $migrationService->migrateAll();
 
-        $message = '<div><h1><strong>Migration abgeschlossen:</strong></h1></div>';
+        $message = '<div><h1><strong>' . Text::_('COM_BLAULICHTMONITOR_MIGRATION_COMPLETED') . '</strong></h1></div>';
 
         foreach ($results as $table => $tableResults) {
             $success = array_filter($tableResults, fn($msg) => str_starts_with($msg, '✅'));
             $errors  = array_filter($tableResults, fn($msg) => str_starts_with($msg, '❌'));
 
             $message .= '<div>';
-            $message .= '<div><strong>Tabelle: </strong><span>' . htmlspecialchars($table) . '</span></div>';
+            $message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_TABLE') . '</strong><span>' . htmlspecialchars($table) . '</span></div>';
             $message .= '<div>';
-            $message .= '<span>✅ ' . count($success) . ' erfolgreich</span>';
+            $message .= '<span>✅ ' . count($success) . Text::_('COM_BLAULICHTMONITOR_SUCCESS') . '</span>';
             $message .= '<span> - </span>';
             if (!empty($errors)) {
-                $message .= '<span>❌ ' . count($errors) . ' Fehler</span>';
+                $message .= '<span>❌ ' . count($errors) . Text::_('COM_BLAULICHTMONITOR_ERROR') . '</span>';
             } else {
-                $message .= '<span>keine Fehler</span>';
+                $message .= '<span>' . Text::_('COM_BLAULICHTMONITOR_NO_ERRORS') . '</span>';
             }
             $message .= '</div>';
 
             // Fehlerdetails als Liste
             if (!empty($errors)) {
-                $message .= '<div><strong>Fehlerdetails:</strong><ul>';
+                $message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_ERROR_DETAILS') . '</strong><ul>';
                 foreach ($errors as $err) {
                     $message .= '<li>' . htmlspecialchars($err) . '</li>';
                 }
@@ -74,7 +75,7 @@ class DisplayController extends BaseController
         $tables = $db->loadColumn();
 
         if (empty($tables)) {
-            $this->app->enqueueMessage('Es wurden keine Tabellen mit "blaulichtmonitor" im Namen gefunden.', 'info');
+            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND'), 'info');
             $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
             return;
         }
@@ -87,7 +88,7 @@ class DisplayController extends BaseController
                 $db->execute();
                 $successTables[] = $table;
             } catch (\Exception $e) {
-                $errors[] = "Fehler beim Leeren von {$table}: " . $e->getMessage();
+                $errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR_DETAIL', $table, $e->getMessage());
             }
         }
 
@@ -98,13 +99,13 @@ class DisplayController extends BaseController
             }
             $tableList .= '</ul>';
             $this->app->enqueueMessage(
-                '<strong>Folgende Tabellen wurden geleert:</strong>' . $tableList,
+                '<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_CLEANED') . '</strong>' . $tableList,
                 'success'
             );
         }
 
         if (!empty($errors)) {
-            $this->app->enqueueMessage('Einige Tabellen konnten nicht geleert werden:<br>' . implode('<br>', $errors), 'error');
+            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR') . '<br>' . implode('<br>', $errors), 'error');
         }
 
         $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
@@ -122,7 +123,7 @@ class DisplayController extends BaseController
         $tables = $db->loadColumn();
 
         if (empty($tables)) {
-            $this->app->enqueueMessage('Es wurden keine Tabellen mit "blaulichtmonitor" im Namen gefunden. Es wurden keine Tabellen gelöscht.', 'info');
+            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND') . ' ' . Text::_('COM_BLAULICHTMONITOR_NO_TABLES_DROPPED'), 'info');
             $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
             return;
         }
@@ -135,7 +136,7 @@ class DisplayController extends BaseController
                 $db->execute();
                 $successTables[] = $table;
             } catch (\Exception $e) {
-                $errors[] = "Fehler beim Löschen von {$table}: " . $e->getMessage();
+                $errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR_DETAIL', $table, $e->getMessage());
             }
         }
 
@@ -146,13 +147,13 @@ class DisplayController extends BaseController
             }
             $tableList .= '</ul>';
             $this->app->enqueueMessage(
-                '<strong>Folgende Tabellen wurden gelöscht:</strong>' . $tableList,
+                '<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_DROPPED') . '</strong>' . $tableList,
                 'success'
             );
         }
 
         if (!empty($errors)) {
-            $this->app->enqueueMessage('Einige Tabellen konnten nicht gelöscht werden:<br>' . implode('<br>', $errors), 'error');
+            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR') . '<br>' . implode('<br>', $errors), 'error');
         }
 
         $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');

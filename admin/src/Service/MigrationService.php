@@ -5,17 +5,33 @@ namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 class MigrationService
 {
     /**
-     * Hilfsfunktion: Gibt einen SQL-Wert oder NULL zurück
+     * Maximale Anzahl Datensätze pro Batch-Insert.
      */
-    private function sqlValue($value, $db)
+    private int $batchSize = 500;
+
+    /**
+     * Hilfsfunktion: Gibt einen SQL-Wert je nach Typ oder NULL zurück.
+     */
+    private function sqlValue($value, $db, $type = 'string')
     {
-        return (isset($value) && trim($value) !== '' && $value !== 0 && $value !== '0')
-            ? $db->q($value)
-            : 'NULL';
+        if ($value === null || $value === '' || ($type === 'int' && $value === 0)) {
+            return 'NULL';
+        }
+        switch ($type) {
+            case 'int':
+                return (int)$value;
+            case 'bool':
+                return (int)(bool)$value;
+            case 'date':
+                return $db->q(date('Y-m-d H:i:s', strtotime($value)));
+            default:
+                return $db->q($value);
+        }
     }
 
     /**
@@ -90,9 +106,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ ID {$row['id']} - Name: {$row['name']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_EINHEIT', $row['id'], $row['name']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei ID {$row['id']} - Name: {$row['name']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_EINHEIT', $row['id'], $row['name'], $e->getMessage());
             }
         }
         return $results;
@@ -127,9 +143,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Alarmierungsart {$row['title']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_ALARMIERUNGSART', $row['title']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Alarmierungsart {$row['title']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_ALARMIERUNGSART', $row['title'], $e->getMessage());
             }
         }
         return $results;
@@ -175,9 +191,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Einsatzart {$row['title']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_EINSATZART', $row['title']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Einsatzart {$row['title']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_EINSATZART', $row['title'], $e->getMessage());
             }
         }
         return $results;
@@ -212,9 +228,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Einsatzkategorie {$row['title']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_EINSATZKATEGORIE', $row['title']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Einsatzkategorie {$row['title']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_EINSATZKATEGORIE', $row['title'], $e->getMessage());
             }
         }
         return $results;
@@ -259,10 +275,10 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Einsatzleiter {$name} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_EINSATZLEITER', $name);
                 $ordering++;
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Einsatzleiter {$name}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_EINSATZLEITER', $name, $e->getMessage());
             }
         }
         return $results;
@@ -298,9 +314,9 @@ class MigrationService
                 ->values($this->sqlValue($strasse, $db));
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Strasse: {$strasse} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_STRASSE', $strasse);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Strasse: {$strasse}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_STRASSE', $strasse, $e->getMessage());
             }
         }
         return $results;
@@ -384,9 +400,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Fahrzeug {$row['name']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_FAHRZEUG', $row['name']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Fahrzeug {$row['name']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_FAHRZEUG', $row['name'], $e->getMessage());
             }
         }
         return $results;
@@ -531,9 +547,9 @@ class MigrationService
                 );
             try {
                 $db->setQuery($insert)->execute();
-                $results[] = "✅ Einsatzbericht ID {$row['id']} migriert.";
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_EINSATZBERICHT', $row['id']);
             } catch (\Exception $e) {
-                $results[] = "❌ Fehler bei Einsatzbericht ID {$row['id']}: " . $e->getMessage();
+                $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_EINSATZBERICHT', $row['id'], $e->getMessage());
             }
         }
         return $results;
@@ -578,9 +594,9 @@ class MigrationService
 
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatzbericht_id} mit Einsatzleiter {$einsatzleiter_id} verknüpft.";
+                    $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_VERKNUEPFUNG', $einsatzbericht_id, 'Einsatzleiter', $einsatzleiter_id);
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id}: " . $e->getMessage();
+                    $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_VERKNUEPFUNG', $einsatzbericht_id, 'Einsatzleiter', $einsatzleiter_id, $e->getMessage());
                 }
             }
         }
@@ -621,9 +637,9 @@ class MigrationService
                         ->values($einsatzbericht_id . ', ' . (int)$einheit_id);
                     try {
                         $db->setQuery($insert)->execute();
-                        $results[] = "✅ Einsatz {$einsatzbericht_id} mit Einheit {$einheit_id} verknüpft.";
+                        $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_VERKNUEPFUNG', $einsatzbericht_id, 'Einheit', $einheit_id);
                     } catch (\Exception $e) {
-                        $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} / Einheit {$einheit_id}: " . $e->getMessage();
+                        $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_VERKNUEPFUNG', $einsatzbericht_id, 'Einheit', $einheit_id, $e->getMessage());
                     }
                 }
             }
@@ -665,9 +681,9 @@ class MigrationService
                         ->values($einsatzbericht_id . ', ' . (int)$fahrzeug_id);
                     try {
                         $db->setQuery($insert)->execute();
-                        $results[] = "✅ Einsatz {$einsatzbericht_id} mit Fahrzeug {$fahrzeug_id} verknüpft.";
+                        $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_VERKNUEPFUNG', $einsatzbericht_id, 'Fahrzeug', $fahrzeug_id);
                     } catch (\Exception $e) {
-                        $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} / Fahrzeug {$fahrzeug_id}: " . $e->getMessage();
+                        $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_VERKNUEPFUNG', $einsatzbericht_id, 'Fahrzeug', $fahrzeug_id, $e->getMessage());
                     }
                 }
             }
@@ -706,9 +722,9 @@ class MigrationService
                     );
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatzbericht_id} Presse 1 migriert.";
+                    $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_SUCCESS_PRESSE', $einsatzbericht_id, 1);
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} Presse 1: " . $e->getMessage();
+                    $results[] = Text::sprintf('COM_BLAULICHTMONITOR_MIGRATION_ERROR_PRESSE', $einsatzbericht_id, 1, $e->getMessage());
                 }
             }
 
@@ -756,20 +772,40 @@ class MigrationService
      */
     public function migrateAll(): array
     {
+        /**
+         * Führt alle Migrationen in sinnvoller Reihenfolge aus.
+         *
+         * Reihenfolge:
+         * 1. Stammdaten-/Lookup-Tabellen (unabhängige Tabellen)
+         * 2. Einheiten, Fahrzeuge, Einsatzorte (abhängig von Lookup)
+         * 3. Haupttabelle: Einsatzberichte (benötigt Lookup, Einheiten, Fahrzeuge, Einsatzleiter)
+         * 4. Join-Tabellen (Verknüpfungen zwischen Einsatzberichten und anderen Entitäten)
+         * 5. Medien & Presse (benötigt Einsatzberichte)
+         */
         return [
-            '#__blaulichtmonitor_einheiten' => $this->migrateEinheiten(),
+            // 1. Stammdaten-/Lookup-Tabellen
+            '#__blaulichtmonitor_alarmierungsarten' => $this->migrateAlarmierungsarten(),
             '#__blaulichtmonitor_einsatzarten' => $this->migrateEinsatzarten(),
             '#__blaulichtmonitor_einsatzkategorien' => $this->migrateEinsatzkategorien(),
             '#__blaulichtmonitor_einsatzleiter' => $this->migrateEinsatzleiter(),
-            '#__blaulichtmonitor_einsatzort' => $this->migrateEinsatzort(),
+
+            // 2. Einheiten, Fahrzeuge, Einsatzorte
+            '#__blaulichtmonitor_einheiten' => $this->migrateEinheiten(),
             '#__blaulichtmonitor_fahrzeuge' => $this->migrateFahrzeuge(),
-            '#__blaulichtmonitor_alarmierungsarten' => $this->migrateAlarmierungsarten(),
+            '#__blaulichtmonitor_einsatzort' => $this->migrateEinsatzort(),
+
+            // 3. Haupttabelle: Einsatzberichte
             '#__blaulichtmonitor_einsatzberichte' => $this->migrateEinsatzberichte(),
+
+            // 4. Join-Tabellen (Verknüpfungen)
             '#__blaulichtmonitor_einsatzleiter_einsatzbericht' => $this->migrateEinsatzleiterEinsatzbericht(),
             '#__blaulichtmonitor_einsatzberichte_einheiten' => $this->migrateEinsatzberichteEinheiten(),
             '#__blaulichtmonitor_einsatzberichte_fahrzeuge' => $this->migrateEinsatzFahrzeuge(),
+
+            // 5. Medien & Presse
             '#__blaulichtmonitor_einsatzberichte_presse' => $this->migrateEinsatzberichtePresse(),
-            // weitere Migrationen hier ergänzen
+
+            // Weitere Migrationen hier ergänzen, falls benötigt
         ];
     }
 }

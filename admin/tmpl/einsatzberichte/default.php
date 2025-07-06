@@ -11,12 +11,12 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 <form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=einsatzberichte'); ?>" method="post" name="adminForm" id="adminForm">
     <div class="table-responsive">
         <table class="table table-striped">
-            <caption><?php echo Text::_('COM_SPM_PROJECTS_LIST'); ?></caption>
+            <caption><?php echo Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHTE_LIST'); ?></caption>
             <thead>
                 <tr>
-                    <td><?php echo Text::_('COM_SPM_PROJECTS_LIST_ID'); ?></td>
-                    <td><?php echo Text::_('COM_SPM_PROJECTS_LIST_NAME'); ?></td>
-                    <td><?php echo Text::_('COM_SPM_PROJECTS_LIST_DEADLINE'); ?></td>
+                    <td><?php echo Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHTE_LIST_ID'); ?></td>
+                    <td><?php echo Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHTE_LIST_ALARMIERUNGSZEIT'); ?></td>
+                    <td><?php echo Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHTE_LIST_BESCHREIBUNG'); ?></td>
                 </tr>
             </thead>
             <tbody>
