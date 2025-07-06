@@ -107,7 +107,7 @@ class MigrationService
         $results = [];
 
         $query = $db->getQuery(true)
-            ->select(['title', 'ordering', 'image'])
+            ->select(['id', 'title', 'ordering', 'image', 'created_by'])
             ->from($db->qn('#__eiko_alarmierungsarten'));
         $db->setQuery($query);
         $rows = $db->loadAssocList();
@@ -117,11 +117,13 @@ class MigrationService
 
             $insert = $db->getQuery(true)
                 ->insert($db->qn('#__blaulichtmonitor_alarmierungsarten'))
-                ->columns(['title', 'image_url', 'ordering'])
+                ->columns(['id', 'title', 'image_url', 'ordering', 'created_by'])
                 ->values(
-                    $this->sqlValue($row['title'], $db) . ', ' .
+                    $this->sqlValue($row['id'], $db) . ', ' .
+                        $this->sqlValue($row['title'], $db) . ', ' .
                         $image_url . ', ' .
-                        $this->sqlValue($row['ordering'], $db)
+                        $this->sqlValue($row['ordering'], $db) . ', ' .
+                        $this->sqlValue($row['created_by'], $db)
                 );
             try {
                 $db->setQuery($insert)->execute();
@@ -475,6 +477,9 @@ class MigrationService
                 $row['date3'] === '0000-00-00 00:00:00'
             ) ? 'NULL' : $db->q($row['date3']);
 
+            $state = (isset($row['state']) && $row['state'] !== '' && $row['state'] != 0)
+                ? $db->q($row['state']) : '0';
+
             $beschreibung = (isset($row['desc']) && trim($row['desc']) !== '')
                 ? $db->q($row['desc']) : 'NULL';
 
@@ -517,7 +522,7 @@ class MigrationService
                         $einsatzende . ', ' .
                         $people_count . ', ' .
                         $beschreibung . ', ' .
-                        $this->sqlValue($row['state'], $db) . ', ' .
+                        $state . ', ' .
                         $this->sqlValue($row['counter'], $db) . ', ' .
                         $this->sqlValue($row['created_by'], $db) . ', ' .
                         $this->sqlValue($row['createdate'], $db) . ', ' .
@@ -537,7 +542,7 @@ class MigrationService
     /**
      * Migration: Verknüpft Einsätze mit Einsatzleitern (Join-Tabelle)
      */
-    public function migrateEinsatzleiterEinsatz(): array
+    public function migrateEinsatzleiterEinsatzbericht(): array
     {
         $db = Factory::getDbo();
         $results = [];
@@ -561,21 +566,21 @@ class MigrationService
         $einsatzRows = $db->loadAssocList();
 
         foreach ($einsatzRows as $row) {
-            $einsatz_id = (int)$row['id'];
+            $einsatzbericht_id = (int)$row['id'];
             $leiterName = trim(strtolower($row['boss'] ?? ''));
             if ($leiterName && isset($leiterMap[$leiterName])) {
                 $einsatzleiter_id = $leiterMap[$leiterName];
 
                 $insert = $db->getQuery(true)
-                    ->insert($db->qn('#__blaulichtmonitor_einsatzleiter_einsatz'))
-                    ->columns(['einsatzleiter_id', 'einsatz_id'])
-                    ->values($einsatzleiter_id . ', ' . $einsatz_id);
+                    ->insert($db->qn('#__blaulichtmonitor_einsatzleiter_einsatzbericht'))
+                    ->columns(['einsatzleiter_id', 'einsatzbericht_id'])
+                    ->values($einsatzleiter_id . ', ' . $einsatzbericht_id);
 
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatz_id} mit Einsatzleiter {$einsatzleiter_id} verknüpft.";
+                    $results[] = "✅ Einsatz {$einsatzbericht_id} mit Einsatzleiter {$einsatzleiter_id} verknüpft.";
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatz_id}: " . $e->getMessage();
+                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id}: " . $e->getMessage();
                 }
             }
         }
@@ -586,7 +591,7 @@ class MigrationService
      * Migration: Verknüpft Einsätze mit Einheiten (Join-Tabelle)
      * Das Feld 'auswahl_orga' in #__eiko_einsatzberichte ist kommasepariert (z.B. "1,16,14,12,33,13")
      */
-    public function migrateEinsatzEinheiten(): array
+    public function migrateEinsatzberichteEinheiten(): array
     {
         $db = Factory::getDbo();
         $results = [];
@@ -606,19 +611,19 @@ class MigrationService
         $einsatzRows = $db->loadAssocList();
 
         foreach ($einsatzRows as $row) {
-            $einsatz_id = (int)$row['id'];
+            $einsatzbericht_id = (int)$row['id'];
             $orgaList = array_filter(array_map('trim', explode(',', $row['auswahl_orga'] ?? '')));
             foreach ($orgaList as $einheit_id) {
                 if ($einheit_id !== '' && is_numeric($einheit_id) && isset($einheitRows[$einheit_id])) {
                     $insert = $db->getQuery(true)
-                        ->insert($db->qn('#__blaulichtmonitor_einsatz_einheiten'))
-                        ->columns(['einsatz_id', 'einheit_id'])
-                        ->values($einsatz_id . ', ' . (int)$einheit_id);
+                        ->insert($db->qn('#__blaulichtmonitor_einsatzberichte_einheiten'))
+                        ->columns(['einsatzbericht_id', 'einheit_id'])
+                        ->values($einsatzbericht_id . ', ' . (int)$einheit_id);
                     try {
                         $db->setQuery($insert)->execute();
-                        $results[] = "✅ Einsatz {$einsatz_id} mit Einheit {$einheit_id} verknüpft.";
+                        $results[] = "✅ Einsatz {$einsatzbericht_id} mit Einheit {$einheit_id} verknüpft.";
                     } catch (\Exception $e) {
-                        $results[] = "❌ Fehler bei Einsatz {$einsatz_id} / Einheit {$einheit_id}: " . $e->getMessage();
+                        $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} / Einheit {$einheit_id}: " . $e->getMessage();
                     }
                 }
             }
@@ -650,19 +655,19 @@ class MigrationService
         $einsatzRows = $db->loadAssocList();
 
         foreach ($einsatzRows as $row) {
-            $einsatz_id = (int)$row['id'];
+            $einsatzbericht_id = (int)$row['id'];
             $vehicleList = array_filter(array_map('trim', explode(',', $row['vehicles'] ?? '')));
             foreach ($vehicleList as $fahrzeug_id) {
                 if ($fahrzeug_id !== '' && is_numeric($fahrzeug_id) && isset($fahrzeugRows[$fahrzeug_id])) {
                     $insert = $db->getQuery(true)
-                        ->insert($db->qn('#__blaulichtmonitor_einsatz_fahrzeuge'))
-                        ->columns(['einsatz_id', 'fahrzeug_id'])
-                        ->values($einsatz_id . ', ' . (int)$fahrzeug_id);
+                        ->insert($db->qn('#__blaulichtmonitor_einsatzberichte_fahrzeuge'))
+                        ->columns(['einsatzbericht_id', 'fahrzeug_id'])
+                        ->values($einsatzbericht_id . ', ' . (int)$fahrzeug_id);
                     try {
                         $db->setQuery($insert)->execute();
-                        $results[] = "✅ Einsatz {$einsatz_id} mit Fahrzeug {$fahrzeug_id} verknüpft.";
+                        $results[] = "✅ Einsatz {$einsatzbericht_id} mit Fahrzeug {$fahrzeug_id} verknüpft.";
                     } catch (\Exception $e) {
-                        $results[] = "❌ Fehler bei Einsatz {$einsatz_id} / Fahrzeug {$fahrzeug_id}: " . $e->getMessage();
+                        $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} / Fahrzeug {$fahrzeug_id}: " . $e->getMessage();
                     }
                 }
             }
@@ -674,7 +679,7 @@ class MigrationService
      * Migration: Verknüpft Einsätze mit Presseartikeln (Mehrere pro Einsatz möglich)
      * Es gibt bis zu 3 Gruppen: presse_label/presse, presse2_label/presse2, presse3_label/presse3
      */
-    public function migrateEinsatzPresse(): array
+    public function migrateEinsatzberichtePresse(): array
     {
         $db = Factory::getDbo();
         $results = [];
@@ -687,59 +692,59 @@ class MigrationService
         $einsatzRows = $db->loadAssocList();
 
         foreach ($einsatzRows as $row) {
-            $einsatz_id = (int)$row['id'];
+            $einsatzbericht_id = (int)$row['id'];
 
             // Presse 1
             if (!empty($row['presse'])) {
                 $insert = $db->getQuery(true)
-                    ->insert($db->qn('#__blaulichtmonitor_einsatz_presse'))
-                    ->columns(['einsatz_id', 'url', 'title'])
+                    ->insert($db->qn('#__blaulichtmonitor_einsatzberichte_presse'))
+                    ->columns(['einsatzbericht_id', 'url', 'title'])
                     ->values(
-                        $einsatz_id . ', ' .
+                        $einsatzbericht_id . ', ' .
                             $db->q($row['presse']) . ', ' .
                             (!empty($row['presse_label']) ? $db->q($row['presse_label']) : 'NULL')
                     );
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatz_id} Presse 1 migriert.";
+                    $results[] = "✅ Einsatz {$einsatzbericht_id} Presse 1 migriert.";
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatz_id} Presse 1: " . $e->getMessage();
+                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} Presse 1: " . $e->getMessage();
                 }
             }
 
             // Presse 2
             if (!empty($row['presse2'])) {
                 $insert = $db->getQuery(true)
-                    ->insert($db->qn('#__blaulichtmonitor_einsatz_presse'))
-                    ->columns(['einsatz_id', 'url', 'title'])
+                    ->insert($db->qn('#__blaulichtmonitor_einsatzberichte_presse'))
+                    ->columns(['einsatzbericht_id', 'url', 'title'])
                     ->values(
-                        $einsatz_id . ', ' .
+                        $einsatzbericht_id . ', ' .
                             $db->q($row['presse2']) . ', ' .
                             (!empty($row['presse2_label']) ? $db->q($row['presse2_label']) : 'NULL')
                     );
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatz_id} Presse 2 migriert.";
+                    $results[] = "✅ Einsatz {$einsatzbericht_id} Presse 2 migriert.";
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatz_id} Presse 2: " . $e->getMessage();
+                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} Presse 2: " . $e->getMessage();
                 }
             }
 
             // Presse 3
             if (!empty($row['presse3'])) {
                 $insert = $db->getQuery(true)
-                    ->insert($db->qn('#__blaulichtmonitor_einsatz_presse'))
-                    ->columns(['einsatz_id', 'url', 'title'])
+                    ->insert($db->qn('#__blaulichtmonitor_einsatzberichte_presse'))
+                    ->columns(['einsatzbericht_id', 'url', 'title'])
                     ->values(
-                        $einsatz_id . ', ' .
+                        $einsatzbericht_id . ', ' .
                             $db->q($row['presse3']) . ', ' .
                             (!empty($row['presse3_label']) ? $db->q($row['presse3_label']) : 'NULL')
                     );
                 try {
                     $db->setQuery($insert)->execute();
-                    $results[] = "✅ Einsatz {$einsatz_id} Presse 3 migriert.";
+                    $results[] = "✅ Einsatz {$einsatzbericht_id} Presse 3 migriert.";
                 } catch (\Exception $e) {
-                    $results[] = "❌ Fehler bei Einsatz {$einsatz_id} Presse 3: " . $e->getMessage();
+                    $results[] = "❌ Fehler bei Einsatz {$einsatzbericht_id} Presse 3: " . $e->getMessage();
                 }
             }
         }
@@ -760,10 +765,10 @@ class MigrationService
             '#__blaulichtmonitor_fahrzeuge' => $this->migrateFahrzeuge(),
             '#__blaulichtmonitor_alarmierungsarten' => $this->migrateAlarmierungsarten(),
             '#__blaulichtmonitor_einsatzberichte' => $this->migrateEinsatzberichte(),
-            '#__blaulichtmonitor_einsatzleiter_einsatz' => $this->migrateEinsatzleiterEinsatz(),
-            '#__blaulichtmonitor_einsatz_einheiten' => $this->migrateEinsatzEinheiten(),
-            '#__blaulichtmonitor_einsatz_fahrzeuge' => $this->migrateEinsatzFahrzeuge(),
-            '#__blaulichtmonitor_einsatz_presse' => $this->migrateEinsatzPresse(),
+            '#__blaulichtmonitor_einsatzleiter_einsatzbericht' => $this->migrateEinsatzleiterEinsatzbericht(),
+            '#__blaulichtmonitor_einsatzberichte_einheiten' => $this->migrateEinsatzberichteEinheiten(),
+            '#__blaulichtmonitor_einsatzberichte_fahrzeuge' => $this->migrateEinsatzFahrzeuge(),
+            '#__blaulichtmonitor_einsatzberichte_presse' => $this->migrateEinsatzberichtePresse(),
             // weitere Migrationen hier ergänzen
         ];
     }
