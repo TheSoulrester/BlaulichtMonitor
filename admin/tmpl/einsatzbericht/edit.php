@@ -12,9 +12,9 @@ HTMLHelper::_('behavior.keepalive');
             <div class="col-md-9">
                 <div class="row">
                     <div class="col-md-6">
-                        <?php echo $this->form->renderField('einsatzkategorie_id'); ?>
-                        <?php echo $this->form->renderField('alarmierungszeit'); ?>
-                        <?php echo $this->form->renderField('beschreibung'); ?>
+                        <?php foreach ($this->form->getFieldset() as $field) : ?>
+                            <?php echo $field->renderField(); ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>

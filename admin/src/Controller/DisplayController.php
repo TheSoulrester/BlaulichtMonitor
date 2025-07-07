@@ -2,11 +2,9 @@
 
 namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\Controller;
 
-use AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service\MigrationService;
-
-
 defined('_JEXEC') or die;
 
+use AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service\MigrationService;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
 

@@ -25,10 +25,13 @@ class EinsatzberichteModel extends ListModel
         $app = Factory::getApplication();
         $value = $app->input->get('limit', $app->get('list_limit', 0), 'uint');
         $this->setState('list.limit', $value);
+
         $value = $app->input->get('limitstart', 0, 'uint');
         $this->setState('list.start', $value);
+
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
+
         parent::populateState($ordering, $direction);
     }
 
@@ -46,7 +49,9 @@ class EinsatzberichteModel extends ListModel
                 ]
             )
         )->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'));
+
         $search = $this->getState('filter.search');
+
         if (!empty($search)) {
             $search = $db->quote('%' . str_replace(
                 ' ',
@@ -55,15 +60,19 @@ class EinsatzberichteModel extends ListModel
             ));
             $query->where('(a.alarmierungszeit LIKE ' . $search . ')');
         }
+
         $orderCol = $this->state->get(
             'list.ordering',
             'a.alarmierungszeit'
         );
+
         $orderDirn = $this->state->get(
             'list.direction',
             'DESC'
         );
+
         $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+
         return $query;
     }
 }

@@ -287,7 +287,7 @@ class MigrationService
     /**
      * Migration der Einsatzorte (Straßen)
      */
-    public function migrateEinsatzort(): array
+    public function migrateEinsatzorte(): array
     {
         $db = Factory::getDbo();
         $results = [];
@@ -309,7 +309,7 @@ class MigrationService
 
         foreach ($strassen as $strasse) {
             $insert = $db->getQuery(true)
-                ->insert($db->qn('#__blaulichtmonitor_einsatzort'))
+                ->insert($db->qn('#__blaulichtmonitor_einsatzorte'))
                 ->columns(['strasse'])
                 ->values($this->sqlValue($strasse, $db));
             try {
@@ -792,7 +792,7 @@ class MigrationService
             // 2. Einheiten, Fahrzeuge, Einsatzorte
             '#__blaulichtmonitor_einheiten' => $this->migrateEinheiten(),
             '#__blaulichtmonitor_fahrzeuge' => $this->migrateFahrzeuge(),
-            '#__blaulichtmonitor_einsatzort' => $this->migrateEinsatzort(),
+            '#__blaulichtmonitor_einsatzorte' => $this->migrateEinsatzorte(),
 
             // 3. Haupttabelle: Einsatzberichte
             '#__blaulichtmonitor_einsatzberichte' => $this->migrateEinsatzberichte(),

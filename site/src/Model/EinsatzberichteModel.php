@@ -32,7 +32,7 @@ class EinsatzberichteModel extends ListModel
                     $db->quoteName('a.alarmierungszeit'),
                 ]
             )
-        )->from($db->quoteName('#__blaulichtmonitor_einsaetze', 'a'));
+        )->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'));
         $orderCol = $this->state->get(
             'list.ordering',
             'a.alarmierungszeit'

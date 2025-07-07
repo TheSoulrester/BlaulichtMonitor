@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-    <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title FROM #__blaulichtmonitor_einsatzkategorien ORDER BY title ASC" key_field="id" value_field="bezeichnung" required="true" />
-    <field name="alarmierungszeit" type="text" label="COM_SPM_PROJECT_NAME" required="true" />
-    <field name="beschreibung" type="text" label="COM_SPM_PROJECT_ALIAS" required="false" />
-    <field name="created_by" type="user" label="COM_SPM_PROJECT_CREATED_BY" filter="unset" />
+    <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_alarmierungsarten ORDER BY ordering ASC" key_field="id" value_field="title" required="true" />
+    <field name="einsatzsart_id" type="sql" label="Einsatzart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzarten ORDER BY ordering ASC" key_field="id" value_field="title" required="true" />
+    <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzkategorien ORDER BY ordering ASC" key_field="id" value_field="title" required="true" />
+    <field name="prioritaet" type="text" label="Priorität" required="false" />
+
+    <field name="einsatzort_strasse" type="sql" label="Einsatzort Straße" query="SELECT id, strasse FROM #__blaulichtmonitor_einsatzorte ORDER BY strasse ASC" key_field="id" value_field="strasse" required="true" />
+
+    <field name="alarmierungszeit" type="text" label="Alarmierungszeit" required="true" />
+    <field name="ausrueckzeit" type="text" label="Ausrückzeit" required="false" />
+    <field name="einsatzende" type="text" label="Einsatzende" required="false" />
+    <field name="einsatzleiter_id" type="sql" label="Einsatzleiter" query="SELECT id, name, ordering FROM #__blaulichtmonitor_einsatzleiter ORDER BY ordering ASC" key_field="id" value_field="name" required="true" />
+    <field name="people_count" type="text" label="Mannschaftsstärke" required="false" />
+    <field name="einheiten_id" type="sql" label="Einheiten" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einheiten ORDER BY ordering ASC" key_field="id" value_field="title" required="true" />
+    <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" query="SELECT id, funkrufname, ordering FROM #__blaulichtmonitor_fahrzeuge ORDER BY ordering ASC" key_field="id" value_field="funkrufname" required="true" />
+
+    <field name="einsatzkurzbericht" type="text" label="Einsatzkurzbericht" required="false" />
+    <field name="beschreibung" type="text" label="Beschreibung" required="false" />
+    <field name="einsatzbilder" type="text" label="Einsatzbilder" required="false" />
+    <field name="presse" type="text" label="Presselink" required="false" />
+
+    <field name="state" type="text" label="Veröffentlicht" required="false" />
+    <field name="created_by" type="user" label="CreatedBy" filter="unset" />
 </form>

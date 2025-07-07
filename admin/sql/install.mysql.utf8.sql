@@ -102,7 +102,7 @@ CREATE TABLE `#__blaulichtmonitor_fahrzeuge` (
     modified_by          INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `#__blaulichtmonitor_einsatzort` (
+CREATE TABLE `#__blaulichtmonitor_einsatzorte` (
     id                   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     strasse              VARCHAR(255) NOT NULL,
     hausnummer           INT UNSIGNED DEFAULT NULL,
