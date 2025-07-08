@@ -10,7 +10,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=einsatzberichte'); ?>" method="post" name="adminForm" id="adminForm">
-    <div hidden class="row"> <!-- Aktuell verbuggt, nach Suche ist Sortierung ASC - Pagination funktioniert auch nicht -->
+    <div class="row"> <!-- Aktuell verbuggt, nach Suche ist Sortierung ASC - Pagination funktioniert auch nicht -->
         <div class="col-md-12">
             <?php echo LayoutHelper::render(
                 'joomla.searchtools.default',
@@ -23,9 +23,13 @@ $listDirn = $this->escape($this->state->get('list.direction'));
             <caption>BlaulichtMonitor Einsatzberichte</caption>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>
+                        <?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
+                    </th>
                     <th>Status</th>
-                    <th>Alarmierungszeit</th>
+                    <th>
+            <?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'alarmierungszeit', $listDirn, $listOrder); ?>
+        </th>
                     <th>Einsatzart</th>
                     <th>Einsatzort</th>
                     <th>Kurzbericht</th>
@@ -48,13 +52,13 @@ $listDirn = $this->escape($this->state->get('list.direction'));
                         <td>
                             <?php
                             $einheiten = explode(',', $item->einheiten_liste);
-                            foreach ($einheiten as $einheit) {
-                                $einheit = trim($einheit);
-                                if ($einheit) {
-                                    echo '<span class="badge bg-secondary me-1">' . htmlspecialchars($einheit) . '</span>';
-                                }
-                            }
-                            ?>
+                    foreach ($einheiten as $einheit) {
+                        $einheit = trim($einheit);
+                        if ($einheit) {
+                            echo '<span class="badge bg-secondary me-1">' . htmlspecialchars($einheit) . '</span>';
+                        }
+                    }
+                    ?>
                         </td>
                         <td><?php echo $item->created; ?></td>
                         <td><?php echo $item->modified; ?></td>
