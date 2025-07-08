@@ -40,7 +40,8 @@ $wam->useStyle('com_blaulichtmonitor.einsatzberichte');
         </table>
     </div>
     <div>
-        <?php echo $this->pagination->getResultsCounter(); ?>
+        <?php //echo $this->pagination->getResultsCounter();
+        ?>
     </div>
     <?php echo $this->pagination->getListFooter(); ?>
     <input type="hidden" name="task" value="einsaetze">
