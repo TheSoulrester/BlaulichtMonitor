@@ -9,12 +9,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=einsatzberichte'); ?>" method="post" name="adminForm" id="adminForm">
-	<div class="row"> <!-- Aktuell verbuggt, nach Suche ist Sortierung ASC - Pagination funktioniert auch nicht -->
+	<div class="row">
 		<div class="col-md-12">
 			<div id="j-main-container" class="j-main-container">
 				<?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
-				<?php // load the pagination.
-				echo $this->pagination->getLimitBox(); ?>
 			</div>
 		</div>
 	</div>
@@ -28,7 +26,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					</th>
 					<th>Status</th>
 					<th>
-						<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'alarmierungszeit', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'a.alarmierungszeit', $listDirn, $listOrder); ?>
 					</th>
 					<th>Einsatzart</th>
 					<th>Einsatzort</th>
