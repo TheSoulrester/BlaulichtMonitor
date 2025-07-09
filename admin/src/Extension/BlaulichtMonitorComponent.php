@@ -8,5 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class BlaulichtMonitorComponent extends MVCComponent implements BootableExtensionInterface
 {
-    public function boot(ContainerInterface $container) {}
+    public function boot(ContainerInterface $container)
+    {
+    }
 }

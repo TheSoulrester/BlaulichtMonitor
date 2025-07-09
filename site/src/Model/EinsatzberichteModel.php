@@ -2,7 +2,7 @@
 
 namespace AlexanderGropp\Component\BlaulichtMonitor\Site\Model;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -11,7 +11,7 @@ class EinsatzberichteModel extends ListModel
 {
     protected function populateState($ordering = 'alarmierungszeit', $direction = 'DESC')
     {
-        $app = Factory::getApplication();
+        $app   = Factory::getApplication();
         $value = $app->input->get('limit', $app->get('list_limit', 0), 'uint');
         $this->setState('list.limit', $value);
         $value = $app->input->get('limitstart', 0, 'uint');
@@ -21,7 +21,7 @@ class EinsatzberichteModel extends ListModel
 
     protected function getListQuery()
     {
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
         $query->select(
             $this->getState(
