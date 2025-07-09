@@ -39,7 +39,7 @@ class MigrationService
      */
     public function migrateEinheiten(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -63,14 +63,14 @@ class MigrationService
                 'detail7',
                 'link',
                 'desc',
-                'created_by'
+                'created_by',
             ]))
             ->from($db->qn('#__eiko_organisationen'));
         $db->setQuery($query);
         $rows = $db->loadAssocList();
 
         foreach ($rows as $row) {
-            $created = date('Y-m-d H:i:s');
+            $created           = date('Y-m-d H:i:s');
             $beschreibungParts = [];
 
             // Detail-Label/Wert-Paare prüfen
@@ -119,7 +119,7 @@ class MigrationService
      */
     public function migrateAlarmierungsarten(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -156,7 +156,7 @@ class MigrationService
      */
     public function migrateEinsatzarten(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -166,7 +166,7 @@ class MigrationService
         $rows = $db->loadAssocList();
 
         foreach ($rows as $row) {
-            $created = date('Y-m-d H:i:s');
+            $created  = date('Y-m-d H:i:s');
             $icon_url = '';
             if (!empty($row['icon'])) {
                 $icon_url = $row['icon'];
@@ -204,7 +204,7 @@ class MigrationService
      */
     public function migrateEinsatzkategorien(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -215,7 +215,7 @@ class MigrationService
 
         foreach ($rows as $row) {
             $created = date('Y-m-d H:i:s');
-            $insert = $db->getQuery(true)
+            $insert  = $db->getQuery(true)
                 ->insert($db->qn('#__blaulichtmonitor_einsatzkategorien'))
                 ->columns(['id', 'title', 'icon_url', 'ordering', 'created_by', 'created'])
                 ->values(
@@ -241,7 +241,7 @@ class MigrationService
      */
     public function migrateEinsatzleiter(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -260,12 +260,12 @@ class MigrationService
                 $leiter[] = trim($row['boss2']);
             }
         }
-        $leiter = array_unique(array_filter($leiter));
+        $leiter   = array_unique(array_filter($leiter));
         $ordering = 1;
 
         foreach ($leiter as $name) {
             $created = date('Y-m-d H:i:s');
-            $insert = $db->getQuery(true)
+            $insert  = $db->getQuery(true)
                 ->insert($db->qn('#__blaulichtmonitor_einsatzleiter'))
                 ->columns(['name', 'ordering', 'created'])
                 ->values(
@@ -287,9 +287,9 @@ class MigrationService
     /**
      * Migration der Einsatzorte (Straßen)
      */
-    public function migrateEinsatzort(): array
+    public function migrateEinsatzorte(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -309,7 +309,7 @@ class MigrationService
 
         foreach ($strassen as $strasse) {
             $insert = $db->getQuery(true)
-                ->insert($db->qn('#__blaulichtmonitor_einsatzort'))
+                ->insert($db->qn('#__blaulichtmonitor_einsatzorte'))
                 ->columns(['strasse'])
                 ->values($this->sqlValue($strasse, $db));
             try {
@@ -327,7 +327,7 @@ class MigrationService
      */
     public function migrateFahrzeuge(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         $query = $db->getQuery(true)
@@ -354,14 +354,14 @@ class MigrationService
                 'image',
                 'desc',
                 'ordering',
-                'created_by'
+                'created_by',
             ]))
             ->from($db->qn('#__eiko_fahrzeuge'));
         $db->setQuery($query);
         $rows = $db->loadAssocList();
 
         foreach ($rows as $row) {
-            $created = date('Y-m-d H:i:s');
+            $created           = date('Y-m-d H:i:s');
             $beschreibungParts = [];
             for ($i = 1; $i <= 7; $i++) {
                 $label = $row["detail{$i}_label"] ?? '';
@@ -413,7 +413,7 @@ class MigrationService
      */
     public function migrateEinsatzberichte(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         // Einsatzleiter-Mapping vorbereiten
@@ -422,7 +422,7 @@ class MigrationService
             ->from($db->qn('#__blaulichtmonitor_einsatzleiter'));
         $db->setQuery($leiterQuery);
         $leiterRows = $db->loadAssocList();
-        $leiterMap = [];
+        $leiterMap  = [];
         foreach ($leiterRows as $leiter) {
             $leiterMap[trim(strtolower($leiter['name']))] = (int)$leiter['id'];
         }
@@ -460,7 +460,7 @@ class MigrationService
                 'status',
                 'state',
                 'created_by',
-                'modified_by'
+                'modified_by',
             ])
             ->from($db->qn('#__eiko_einsatzberichte'));
         $db->setQuery($query);
@@ -468,7 +468,7 @@ class MigrationService
 
         foreach ($rows as $row) {
             // Einsatzleiter-ID bestimmen
-            $leiterName = trim(strtolower($row['boss'] ?? ''));
+            $leiterName       = trim(strtolower($row['boss'] ?? ''));
             $einsatzleiter_id = isset($leiterMap[$leiterName]) ? $leiterMap[$leiterName] : 'NULL';
 
             // Felder prüfen und ggf. NULL setzen
@@ -521,7 +521,7 @@ class MigrationService
                     'created_by',
                     'created',
                     'modified_by',
-                    'modified'
+                    'modified',
                 ])
                 ->values(
                     $this->sqlValue($row['id'], $db) . ', ' .
@@ -560,7 +560,7 @@ class MigrationService
      */
     public function migrateEinsatzleiterEinsatzbericht(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         // Mapping: Name → ID aus Ziel-Tabelle
@@ -569,7 +569,7 @@ class MigrationService
             ->from($db->qn('#__blaulichtmonitor_einsatzleiter'));
         $db->setQuery($leiterQuery);
         $leiterRows = $db->loadAssocList();
-        $leiterMap = [];
+        $leiterMap  = [];
         foreach ($leiterRows as $leiter) {
             $leiterMap[trim(strtolower($leiter['name']))] = (int)$leiter['id'];
         }
@@ -583,7 +583,7 @@ class MigrationService
 
         foreach ($einsatzRows as $row) {
             $einsatzbericht_id = (int)$row['id'];
-            $leiterName = trim(strtolower($row['boss'] ?? ''));
+            $leiterName        = trim(strtolower($row['boss'] ?? ''));
             if ($leiterName && isset($leiterMap[$leiterName])) {
                 $einsatzleiter_id = $leiterMap[$leiterName];
 
@@ -609,7 +609,7 @@ class MigrationService
      */
     public function migrateEinsatzberichteEinheiten(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         // Alle gültigen Einheiten-IDs aus der Zieltabelle holen
@@ -628,7 +628,7 @@ class MigrationService
 
         foreach ($einsatzRows as $row) {
             $einsatzbericht_id = (int)$row['id'];
-            $orgaList = array_filter(array_map('trim', explode(',', $row['auswahl_orga'] ?? '')));
+            $orgaList          = array_filter(array_map('trim', explode(',', $row['auswahl_orga'] ?? '')));
             foreach ($orgaList as $einheit_id) {
                 if ($einheit_id !== '' && is_numeric($einheit_id) && isset($einheitRows[$einheit_id])) {
                     $insert = $db->getQuery(true)
@@ -653,7 +653,7 @@ class MigrationService
      */
     public function migrateEinsatzFahrzeuge(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         // Alle gültigen Fahrzeug-IDs aus der Zieltabelle holen
@@ -672,7 +672,7 @@ class MigrationService
 
         foreach ($einsatzRows as $row) {
             $einsatzbericht_id = (int)$row['id'];
-            $vehicleList = array_filter(array_map('trim', explode(',', $row['vehicles'] ?? '')));
+            $vehicleList       = array_filter(array_map('trim', explode(',', $row['vehicles'] ?? '')));
             foreach ($vehicleList as $fahrzeug_id) {
                 if ($fahrzeug_id !== '' && is_numeric($fahrzeug_id) && isset($fahrzeugRows[$fahrzeug_id])) {
                     $insert = $db->getQuery(true)
@@ -697,7 +697,7 @@ class MigrationService
      */
     public function migrateEinsatzberichtePresse(): array
     {
-        $db = Factory::getDbo();
+        $db      = Factory::getDbo();
         $results = [];
 
         // Alle Einsatzberichte holen
@@ -785,22 +785,22 @@ class MigrationService
         return [
             // 1. Stammdaten-/Lookup-Tabellen
             '#__blaulichtmonitor_alarmierungsarten' => $this->migrateAlarmierungsarten(),
-            '#__blaulichtmonitor_einsatzarten' => $this->migrateEinsatzarten(),
+            '#__blaulichtmonitor_einsatzarten'      => $this->migrateEinsatzarten(),
             '#__blaulichtmonitor_einsatzkategorien' => $this->migrateEinsatzkategorien(),
-            '#__blaulichtmonitor_einsatzleiter' => $this->migrateEinsatzleiter(),
+            '#__blaulichtmonitor_einsatzleiter'     => $this->migrateEinsatzleiter(),
 
             // 2. Einheiten, Fahrzeuge, Einsatzorte
-            '#__blaulichtmonitor_einheiten' => $this->migrateEinheiten(),
-            '#__blaulichtmonitor_fahrzeuge' => $this->migrateFahrzeuge(),
-            '#__blaulichtmonitor_einsatzort' => $this->migrateEinsatzort(),
+            '#__blaulichtmonitor_einheiten'   => $this->migrateEinheiten(),
+            '#__blaulichtmonitor_fahrzeuge'   => $this->migrateFahrzeuge(),
+            '#__blaulichtmonitor_einsatzorte' => $this->migrateEinsatzorte(),
 
             // 3. Haupttabelle: Einsatzberichte
             '#__blaulichtmonitor_einsatzberichte' => $this->migrateEinsatzberichte(),
 
             // 4. Join-Tabellen (Verknüpfungen)
             '#__blaulichtmonitor_einsatzleiter_einsatzbericht' => $this->migrateEinsatzleiterEinsatzbericht(),
-            '#__blaulichtmonitor_einsatzberichte_einheiten' => $this->migrateEinsatzberichteEinheiten(),
-            '#__blaulichtmonitor_einsatzberichte_fahrzeuge' => $this->migrateEinsatzFahrzeuge(),
+            '#__blaulichtmonitor_einsatzberichte_einheiten'    => $this->migrateEinsatzberichteEinheiten(),
+            '#__blaulichtmonitor_einsatzberichte_fahrzeuge'    => $this->migrateEinsatzFahrzeuge(),
 
             // 5. Medien & Presse
             '#__blaulichtmonitor_einsatzberichte_presse' => $this->migrateEinsatzberichtePresse(),

@@ -13,8 +13,8 @@ class HtmlView extends BaseHtmlView
     public $pagination;
     public function display($tpl = null): void
     {
-        $this->state = $this->get('State');
-        $this->items = $this->get('Items');
+        $this->state      = $this->get('State');
+        $this->items      = $this->get('Items');
         $this->pagination = $this->get('Pagination');
         parent::display($tpl);
     }

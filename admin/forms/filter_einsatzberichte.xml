@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <fields name="filter">
+    <field name="search" type="text" label="COM_BLAULICHTMONITOR_PROJECTS_FILTER_SEARCH" />
+  </fields>
+  <fields name="list">
+    <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="25" class="js-select-submit-on-change" />
+  </fields>
+</form>

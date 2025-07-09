@@ -2,13 +2,11 @@
 
 namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\Controller;
 
+\defined('_JEXEC') or die;
+
 use AlexanderGropp\Component\BlaulichtMonitor\Administrator\Service\MigrationService;
-
-
-defined('_JEXEC') or die;
-
-use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 /**
  * @package     Joomla.Administrator
@@ -26,21 +24,21 @@ class DisplayController extends BaseController
         $this->checkToken();
 
         $migrationService = new MigrationService();
-        $results = $migrationService->migrateAll();
+        $results          = $migrationService->migrateAll();
 
         $message = '<div><h1><strong>' . Text::_('COM_BLAULICHTMONITOR_MIGRATION_COMPLETED') . '</strong></h1></div>';
 
         foreach ($results as $table => $tableResults) {
-            $success = array_filter($tableResults, fn($msg) => str_starts_with($msg, '✅'));
-            $errors  = array_filter($tableResults, fn($msg) => str_starts_with($msg, '❌'));
+            $success = array_filter($tableResults, fn ($msg) => str_starts_with($msg, '✅'));
+            $errors  = array_filter($tableResults, fn ($msg) => str_starts_with($msg, '❌'));
 
             $message .= '<div>';
             $message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_TABLE') . '</strong><span>' . htmlspecialchars($table) . '</span></div>';
             $message .= '<div>';
-            $message .= '<span>✅ ' . count($success) . Text::_('COM_BLAULICHTMONITOR_SUCCESS') . '</span>';
+            $message .= '<span>✅ ' . \count($success) . Text::_('COM_BLAULICHTMONITOR_SUCCESS') . '</span>';
             $message .= '<span> - </span>';
             if (!empty($errors)) {
-                $message .= '<span>❌ ' . count($errors) . Text::_('COM_BLAULICHTMONITOR_ERROR') . '</span>';
+                $message .= '<span>❌ ' . \count($errors) . Text::_('COM_BLAULICHTMONITOR_ERROR') . '</span>';
             } else {
                 $message .= '<span>' . Text::_('COM_BLAULICHTMONITOR_NO_ERRORS') . '</span>';
             }
@@ -67,7 +65,7 @@ class DisplayController extends BaseController
     {
         $this->checkToken();
 
-        $db = \Joomla\CMS\Factory::getDbo();
+        $db     = \Joomla\CMS\Factory::getDbo();
         $prefix = $db->getPrefix();
 
         // Alle Tabellen mit "blaulichtmonitor" im Namen suchen
@@ -80,7 +78,7 @@ class DisplayController extends BaseController
             return;
         }
 
-        $errors = [];
+        $errors        = [];
         $successTables = [];
         foreach ($tables as $table) {
             try {
@@ -115,7 +113,7 @@ class DisplayController extends BaseController
     {
         $this->checkToken();
 
-        $db = \Joomla\CMS\Factory::getDbo();
+        $db     = \Joomla\CMS\Factory::getDbo();
         $prefix = $db->getPrefix();
 
         // Alle Tabellen mit "blaulichtmonitor" im Namen suchen
@@ -129,7 +127,7 @@ class DisplayController extends BaseController
         }
 
         $successTables = [];
-        $errors = [];
+        $errors        = [];
         foreach ($tables as $table) {
             try {
                 $db->setQuery('DROP TABLE IF EXISTS `' . $table . '`');

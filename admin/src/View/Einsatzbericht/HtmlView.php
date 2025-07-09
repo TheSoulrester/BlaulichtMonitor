@@ -5,8 +5,8 @@ namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\View\Einsatzbe
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -18,11 +18,11 @@ class HtmlView extends BaseHtmlView
 
     public function display($tpl = null): void
     {
-        $this->form = $this->get('Form');
+        $this->form  = $this->get('Form');
         $this->state = $this->get('State');
-        $this->item = $this->get('Item');
-        $errors = $this->get('Errors');
-        if (is_array($errors) && count($errors)) {
+        $this->item  = $this->get('Item');
+        $errors      = $this->get('Errors');
+        if (\is_array($errors) && \count($errors)) {
             throw new GenericDataException(implode(
                 "\n",
                 $errors
@@ -35,8 +35,8 @@ class HtmlView extends BaseHtmlView
     protected function addToolbar()
     {
         Factory::getApplication()->input->set('hidemainmenu', true);
-        $isNew = ($this->item->id == 0);
-        $canDo = ContentHelper::getActions('com_blaulichtmonitor');
+        $isNew   = ($this->item->id == 0);
+        $canDo   = ContentHelper::getActions('com_blaulichtmonitor');
         $toolbar = Toolbar::getInstance();
         ToolbarHelper::title(
             Text::_('COM_BLAULICHTMONITOR_EINSATZBERICHT_TITLE_' . ($isNew ? 'ADD' : 'EDIT'))

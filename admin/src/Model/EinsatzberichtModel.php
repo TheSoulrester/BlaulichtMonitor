@@ -7,14 +7,14 @@ use Joomla\CMS\MVC\Model\AdminModel;
 
 class EinsatzberichtModel extends AdminModel
 {
-    public function getForm($data = array(), $loadData = true)
+    public function getForm($data = [], $loadData = true)
     {
         $form = $this->loadForm(
             'com_blaulichtmonitor.einsatzbericht',
             'einsatzbericht',
             [
-                'control' => 'jform',
-                'load_data' => $loadData
+                'control'   => 'jform',
+                'load_data' => $loadData,
             ]
         );
         if (empty($form)) {
@@ -24,7 +24,7 @@ class EinsatzberichtModel extends AdminModel
     }
     protected function loadFormData()
     {
-        $app = Factory::getApplication();
+        $app  = Factory::getApplication();
         $data = $app->getUserState(
             'com_blaulichtmonitor.edit.einsatzbericht.data',
             []

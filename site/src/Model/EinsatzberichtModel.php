@@ -11,14 +11,14 @@ class EinsatzberichtModel extends BaseDatabaseModel
 
     protected function populateState()
     {
-        $app = Factory::getApplication();
+        $app    = Factory::getApplication();
         $params = $app->getParams();
-        $id = $app->input->getInt('id');
+        $id     = $app->input->getInt('id');
         $this->setState('einsatzbericht.id', $id);
         $this->setState('einsatzbericht.params', $params);
     }
 
-    function getItem($pk = null)
+    public function getItem($pk = null)
     {
         $id = (int) $pk ?: (int) $this->getState('einsatzbericht.id');
         if (!$id) {
@@ -27,7 +27,7 @@ class EinsatzberichtModel extends BaseDatabaseModel
         if ($this->_item !== null && $this->_item->id != $id) {
             return $this->_item;
         }
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
         $query->select('*')
             ->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'))

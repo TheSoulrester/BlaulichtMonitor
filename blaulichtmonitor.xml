@@ -45,6 +45,7 @@
             <folder>src</folder>
             <folder>tmpl</folder>
             <file>access.xml</file>
+            <file>config.xml</file>
         </files>
 
         <languages>
