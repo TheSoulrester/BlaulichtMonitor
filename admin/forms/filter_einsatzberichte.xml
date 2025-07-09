@@ -4,6 +4,13 @@
     <field name="search" type="text" label="COM_BLAULICHTMONITOR_PROJECTS_FILTER_SEARCH" />
   </fields>
   <fields name="list">
+    <field name="fullordering" type="list" label="JGLOBAL_SORT_BY" default="a.alarmieurngszeit DESC" class="js-select-submit-on-change" validate="options">
+      <option value="">JGLOBAL_SORT_BY</option>
+      <option value="a.alarmierungszeit ASC">Alarmierungszeit aufsteigend</option>
+      <option value="a.alarmierungszeit DESC">Alarmierungszeit absteigend</option>
+      <option value="a.counter_clicks ASC">Zugriffe aufsteigend</option>
+      <option value="a.counter_clicks DESC">Zugriffe absteigend</option>
+    </field>
     <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="25" class="js-select-submit-on-change" />
   </fields>
 </form>

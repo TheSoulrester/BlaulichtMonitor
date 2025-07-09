@@ -15,12 +15,14 @@ class EinsatzberichteModel extends ListModel
 				'a.id',
 				'alarmierungszeit',
 				'a.alarmierungszeit',
+				'counter_clicks',
+				'a.counter_clicks',
 			];
 		}
 		parent::__construct($config);
 	}
 
-	protected function populateState($ordering = 'alarmierungszeit', $direction = 'DESC')
+	protected function populateState($ordering = 'a.alarmierungszeit', $direction = 'DESC')
 	{
 		$app   = Factory::getApplication();
 		$value = $app->input->get('limit', $app->get('list_limit', 0), 'uint');

@@ -31,7 +31,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<th>Einsatzart</th>
 					<th>Einsatzort</th>
 					<th>Kurzbericht</th>
-					<th>Zugriffe</th>
+					<th>
+						<?php echo HTMLHelper::_('searchtools.sort', 'Zugriffe', 'a.counter_clicks', $listDirn, $listOrder); ?>
+					</th>
 					<th>Einheiten</th>
 					<th>Erstellt am</th>
 					<th>Bearbeitet am</th>
