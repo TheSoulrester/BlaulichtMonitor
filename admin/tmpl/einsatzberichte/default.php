@@ -42,11 +42,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<th>Einsatzart</th>
 					<th>Einsatzort</th>
 					<th>Kurzbericht</th>
+					<th>Einheiten</th>
 					<th>
 						<!-- Sortierbarer Spaltenkopf: Zugriffe -->
 						<?php echo HTMLHelper::_('searchtools.sort', 'Zugriffe', 'a.counter_clicks', $listDirn, $listOrder); ?>
 					</th>
-					<th>Einheiten</th>
 					<th>Erstellt am</th>
 					<th>Bearbeitet am</th>
 				</tr>
@@ -60,25 +60,34 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							<!-- Status (veröffentlicht/nicht veröffentlicht) -->
 							<?php echo HTMLHelper::_('jgrid.published', $item->veroeffentlicht, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 						</td>
-						<td><?php echo $item->alarmierungszeit; ?></td>
-						<td><?php echo $item->einsatzart_title; ?></td>
+						<td>
+							<?php $dt_alarmierungszeit = \DateTime::createFromFormat('Y-m-d H:i:s', $item->alarmierungszeit);
+							echo $dt_alarmierungszeit ? $dt_alarmierungszeit->format('d.m.Y H:i:s') : htmlspecialchars($item->alarmierungszeit); ?>
+						</td>
+						<td><a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbericht.edit&id=' . $item->id); ?>"><?php echo $item->einsatzart_title; ?></a></td>
 						<td><?php echo $item->einsatzort_strasse; ?></td>
 						<td><?php echo $item->einsatzkurzbericht; ?></td>
-						<td><?php echo $item->counter_clicks; ?></td>
 						<td>
-							<!-- Einheiten als Badges -->
-							<?php
-							$einheiten = explode(',', $item->einheiten_liste);
-							foreach ($einheiten as $einheit) {
-								$einheit = trim($einheit);
-								if ($einheit) {
-									echo '<span class="badge bg-secondary me-1">' . htmlspecialchars($einheit) . '</span>';
-								}
-							}
-							?>
+							<div class="d-flex flex-wrap justify-content-between gap-1">
+								<!-- Einheiten als Badges -->
+								<?php $einheiten = explode(',', $item->einheiten_liste);
+								foreach ($einheiten as $einheit) {
+									$einheit = trim($einheit);
+									if ($einheit) {
+										echo '<span class="flex-fill badge bg-primary border">' . htmlspecialchars($einheit) . '</span>';
+									}
+								} ?>
+							</div>
 						</td>
-						<td><?php echo $item->created; ?></td>
-						<td><?php echo $item->modified; ?></td>
+						<td><span class="badge bg-success fs-5"><?php echo $item->counter_clicks; ?></span></td>
+						<td>
+							<?php $dt_created = \DateTime::createFromFormat('Y-m-d H:i:s', $item->created);
+							echo $dt_created ? $dt_created->format('d.m.Y H:i:s') : htmlspecialchars($item->created); ?>
+						</td>
+						<td>
+							<?php $dt_modified = \DateTime::createFromFormat('Y-m-d H:i:s', $item->modified);
+							echo $dt_modified ? $dt_modified->format('d.m.Y H:i:s') : htmlspecialchars($item->modified); ?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
