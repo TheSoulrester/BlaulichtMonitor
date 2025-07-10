@@ -5,13 +5,24 @@ namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\View\Einsatzbe
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
+/**
+ * View-Klasse für die Einsatzberichte-Übersicht im Backend.
+ * Holt Daten vom Model und bereitet sie für das Template auf.
+ * Wird von default.php (Template) verwendet.
+ * Für weitere Views kann diese Klasse kopiert und angepasst werden.
+ */
 class HtmlView extends BaseHtmlView
 {
-	public $filterForm;
-	public $state;
-	public $items = [];
-	public $pagination;
-	public $activeFilters = [];
+	public $filterForm;     // Das Filterformular (Suchfeld, Sortierung, Limit)
+	public $state;          // State-Objekt mit Filter- und Sortierinformationen
+	public $items = [];     // Die Einsatzberichte-Datensätze
+	public $pagination;     // Paginierungsobjekt
+	public $activeFilters = []; // Aktive Filter
+
+	/**
+	 * Lädt alle benötigten Daten vom Model und gibt sie an das Template weiter.
+	 * Wird automatisch von Joomla aufgerufen.
+	 */
 	public function display($tpl = null): void
 	{
 		/** @var ContactsModel $model */

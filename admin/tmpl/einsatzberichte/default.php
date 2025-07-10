@@ -4,6 +4,13 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
+/**
+ * Template für die Einsatzberichte-Übersicht im Backend.
+ * Stellt das HTML für die Listenansicht bereit, inklusive Filterformular, Tabelle und Pagination.
+ * Nutzt Daten aus dem View (HtmlView).
+ * Für weitere Views kann dieses Template kopiert und angepasst werden.
+ */
+
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -12,26 +19,31 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<div class="row">
 		<div class="col-md-12">
 			<div id="j-main-container" class="j-main-container">
+				<!-- Filter- und Suchformular -->
 				<?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 			</div>
 		</div>
 	</div>
 	<div class="table-responsive">
+		<!-- Tabelle mit allen Einsatzberichten -->
 		<table class="table table-striped">
 			<caption>BlaulichtMonitor Einsatzberichte</caption>
 			<thead>
 				<tr>
 					<th>
+						<!-- Sortierbarer Spaltenkopf: ID -->
 						<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 					</th>
 					<th>Status</th>
 					<th>
+						<!-- Sortierbarer Spaltenkopf: Alarmierungszeit -->
 						<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'a.alarmierungszeit', $listDirn, $listOrder); ?>
 					</th>
 					<th>Einsatzart</th>
 					<th>Einsatzort</th>
 					<th>Kurzbericht</th>
 					<th>
+						<!-- Sortierbarer Spaltenkopf: Zugriffe -->
 						<?php echo HTMLHelper::_('searchtools.sort', 'Zugriffe', 'a.counter_clicks', $listDirn, $listOrder); ?>
 					</th>
 					<th>Einheiten</th>
@@ -40,16 +52,21 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				</tr>
 			</thead>
 			<tbody>
+				<!-- Zeilen für jeden Einsatzbericht -->
 				<?php foreach ($this->items as $item) : ?>
 					<tr>
 						<td><?php echo $item->id; ?></td>
-						<td><?php echo $item->veroeffentlicht; ?></td>
+						<td>
+							<!-- Status (veröffentlicht/nicht veröffentlicht) -->
+							<?php echo HTMLHelper::_('jgrid.published', $item->veroeffentlicht, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+						</td>
 						<td><?php echo $item->alarmierungszeit; ?></td>
 						<td><?php echo $item->einsatzart_title; ?></td>
 						<td><?php echo $item->einsatzort_strasse; ?></td>
 						<td><?php echo $item->einsatzkurzbericht; ?></td>
 						<td><?php echo $item->counter_clicks; ?></td>
 						<td>
+							<!-- Einheiten als Badges -->
 							<?php
 							$einheiten = explode(',', $item->einheiten_liste);
 							foreach ($einheiten as $einheit) {
@@ -67,6 +84,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</tbody>
 		</table>
 	</div>
+	<!-- Pagination -->
 	<?php echo $this->pagination->getListFooter(); ?>
 
 	<input type="hidden" name="task" value="">
