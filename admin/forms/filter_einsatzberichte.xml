@@ -6,8 +6,8 @@
 -->
 <form>
   <fields name="filter">
-    <!-- Suchfeld für Einsatzberichte -->
-    <field name="search" type="text" label="COM_BLAULICHTMONITOR_PROJECTS_FILTER_SEARCH" />
+    <!-- Suchfeld -->
+    <field name="search" type="text" label="Suche" description="Suche nach Alarmierungszeit, Einsatzart, Einsatzort, Kurzbericht und Einheiten" hint="Suche"/>
   </fields>
   <fields name="list">
     <!-- Dropdown für Sortierung nach verschiedenen Spalten -->
