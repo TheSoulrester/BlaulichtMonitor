@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset name="company_data" label="COM_SPM_CONFIG_FIELDSET_COMPANY_DATA_LABEL" description="COM_SPM_CONFIG_FIELDSET_COMPANY_DATA_DESCRIPTION">
-        <field type="text" description="COM_SPM_CONFIG_COMPANY_NAME_DESCRIPTION" />
-        <field type="text" label="COM_SPM_CONFIG_COMPANY_ADDRESS_LABEL" description="COM_SPM_CONFIG_COMPANY_ADDRESS_DESCRIPTION" />
-        <field type="text" label="COM_SPM_CONFIG_COMPANY_ID_LABEL" description="COM_SPM_CONFIG_COMPANY_ID_DESCRIPTION" />
-    </fieldset>
+  <fieldset name="company_data" label="COM_SPM_CONFIG_FIELDSET_COMPANY_DATA_LABEL" description="COM_SPM_CONFIG_FIELDSET_COMPANY_DATA_DESCRIPTION">
+    <field type="text" description="COM_SPM_CONFIG_COMPANY_NAME_DESCRIPTION" />
+    <field type="text" label="COM_SPM_CONFIG_COMPANY_ADDRESS_LABEL" description="COM_SPM_CONFIG_COMPANY_ADDRESS_DESCRIPTION" />
+    <field type="text" label="COM_SPM_CONFIG_COMPANY_ID_LABEL" description="COM_SPM_CONFIG_COMPANY_ID_DESCRIPTION" />
+  </fieldset>
+  <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL">
+    <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_blaulichtmonitor" section="component" />
+  </fieldset>
 </config>

@@ -2,6 +2,7 @@
 
 namespace AlexanderGropp\Component\BlaulichtMonitor\Administrator\View\Einsatzberichte;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -41,5 +42,10 @@ class HtmlView extends BaseHtmlView
 			), 500);
 		}
 		parent::display($tpl);
+
+		$user = Factory::getApplication()->getIdentity();
+		if (!$user->authorise('core.manage', 'com_blaulichtmonitor')) {
+			throw new GenericDataException('Not allowed', 403);
+		}
 	}
 }
