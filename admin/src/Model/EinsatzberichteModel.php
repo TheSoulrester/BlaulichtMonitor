@@ -78,7 +78,7 @@ class EinsatzberichteModel extends ListModel
 				'list.select',
 				[
 					$db->quoteName('a.id'),
-					$db->quoteName('a.veroeffentlicht'),
+					$db->quoteName('a.published'),
 					$db->quoteName('a.alarmierungszeit'),
 					$db->quoteName('a.einsatzart_id'),
 					$db->quoteName('a.einsatzort_strasse'),

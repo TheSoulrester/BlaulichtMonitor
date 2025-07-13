@@ -74,7 +74,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 										</td>
 										<td class="text-center"><?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?></td>
 										<td class="text-center">
-											<?php echo HTMLHelper::_('jgrid.published', $item->veroeffentlicht, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+											<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 										</td>
 										<td>
 											<?php

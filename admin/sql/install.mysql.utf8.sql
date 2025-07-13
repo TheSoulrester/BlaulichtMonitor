@@ -129,7 +129,7 @@ CREATE TABLE `#__blaulichtmonitor_einsatzberichte` (
     einsatzende          DATETIME DEFAULT NULL,
     people_count         INT UNSIGNED DEFAULT NULL,
     beschreibung         TEXT DEFAULT NULL,
-    veroeffentlicht      TINYINT DEFAULT 0,
+    published            TINYINT DEFAULT 0,
     counter_clicks       INT UNSIGNED DEFAULT 0,
     created              DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by           INT,
