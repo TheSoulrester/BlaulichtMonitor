@@ -6,19 +6,25 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 class EinsatzberichtController extends FormController
 {
-    public function cancel($key = null)
-    {
-        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=einsatzberichte');
-    }
+	protected $view_list = 'einsatzberichte';
+	protected $view_item = 'einsatzbericht';
 
-    protected function getRedirectToListAppend()
-    {
-        // Wird nach save/apply verwendet
-        return '';
-    }
+	/* wird vorerst nicht benötigt
 
-    protected function getRedirectToListRoute($append = null)
-    {
-        return 'index.php?option=com_blaulichtmonitor&view=einsatzberichte' . ($append ? '&' . $append : '');
-    }
+	public function cancel($key = null)
+	{
+		$this->setRedirect('index.php?option=com_blaulichtmonitor&view=' . $this->view_list);
+	}
+
+	protected function getRedirectToListAppend()
+	{
+		// Wird nach save/apply verwendet
+		return '';
+	}
+
+	protected function getRedirectToListRoute($append = null)
+	{
+		return 'index.php?option=com_blaulichtmonitor&view=' . $this->view_list . ($append ? '&' . $append : '');
+	}
+	*/
 }

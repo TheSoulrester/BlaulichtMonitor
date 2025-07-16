@@ -116,6 +116,7 @@ CREATE TABLE `#__blaulichtmonitor_einsatzorte` (
 
 CREATE TABLE `#__blaulichtmonitor_einsatzberichte` (
     id                   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    einsatznummer        INT UNSIGNED DEFAULT NULL,
     alarmierungsart_id   INT UNSIGNED DEFAULT NULL,
     einsatzart_id        INT UNSIGNED DEFAULT NULL,
     einsatzkategorie_id  INT UNSIGNED DEFAULT NULL,
@@ -129,8 +130,8 @@ CREATE TABLE `#__blaulichtmonitor_einsatzberichte` (
     einsatzende          DATETIME DEFAULT NULL,
     people_count         INT UNSIGNED DEFAULT NULL,
     beschreibung         TEXT DEFAULT NULL,
-    published            TINYINT DEFAULT 0,
     counter_clicks       INT UNSIGNED DEFAULT 0,
+    published            TINYINT DEFAULT 0,
     created              DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by           INT,
     modified             DATETIME,
