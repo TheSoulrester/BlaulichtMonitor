@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="false" />
-  <field name="einsatzsart_id" type="sql" label="Einsatzart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzarten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" />
-  <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzkategorien ORDER BY ordering ASC" key_field="id" value_field="title" required="true" />
-  <field name="prioritaet" type="number" label="Priorität" required="false" default="1" min="0" max="3" step="1"/>
+  <field name="id" type="hidden" label="ID" />
+  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="false" class="inputbox" />
+  <field name="einsatzart_id" type="sql" label="Einsatzart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzarten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" class="inputbox" />
+  <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzkategorien ORDER BY ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" />
+
+  <!--https://getbootstrap.com/docs/5.3/components/button-group/-->
+  <field name="prioritaet" type="radio" label="Priorität" required="false" default="" class="btn-group">
+    <option value="0" class="btn btn-outline-light">/</option>
+    <option value="1" class="btn btn-outline-danger">1</option>
+    <option value="2" class="btn btn-outline-warning">2</option>
+    <option value="3" class="btn btn-outline-success">3</option>
+  </field>
 
   <field name="einsatzort_strasse" type="sql" label="Einsatzort Straße" query="SELECT id, strasse FROM #__blaulichtmonitor_einsatzorte ORDER BY strasse ASC" key_field="id" value_field="strasse" required="false" />
 
@@ -13,8 +21,10 @@
 
   <field name="einsatzleiter_id" type="sql" label="Einsatzleiter" query="SELECT id, name, ordering FROM #__blaulichtmonitor_einsatzleiter ORDER BY ordering ASC" key_field="id" value_field="name" required="false" />
   <field name="people_count" type="number" label="Mannschaftsstärke" required="false" default="" min="0" step="1" validate="number" />
-  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einheiten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" />
-  <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" multiple="multiple" query="SELECT id, funkrufname, ordering FROM #__blaulichtmonitor_fahrzeuge ORDER BY ordering ASC" key_field="id" value_field="funkrufname" required="false" />
+
+  <!--https://manual.joomla.org/docs/general-concepts/forms-fields/standard-fields/templatestyle/-->
+  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einheiten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
+  <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" multiple="multiple" query="SELECT id, funkrufname, ordering FROM #__blaulichtmonitor_fahrzeuge ORDER BY ordering ASC" key_field="id" value_field="funkrufname" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Fahrzeuge auswählen..." />
 
   <field name="einsatzkurzbericht" type="text" label="Einsatzkurzbericht" required="false" />
 
