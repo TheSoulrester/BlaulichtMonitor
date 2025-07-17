@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
   <field name="id" type="hidden" label="ID" />
-  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="false" class="inputbox" />
-  <field name="einsatzart_id" type="sql" label="Einsatzart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzarten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" class="inputbox" />
+  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" />
+  <field name="einsatzart_id" type="sql" label="Einsatzart" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzarten ORDER BY ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" />
   <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" query="SELECT id, title, ordering FROM #__blaulichtmonitor_einsatzkategorien ORDER BY ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" />
 
   <!--https://getbootstrap.com/docs/5.3/components/button-group/-->
-  <field name="prioritaet" type="radio" label="Priorität" required="false" default="" class="btn-group">
-    <option value="0" class="btn btn-outline-light">/</option>
+  <field name="prioritaet" type="radio" label="Priorität" required="false" default="0" class="btn-group">
+    <option value="0" class="btn btn-outline-secondary">/</option>
     <option value="1" class="btn btn-outline-danger">1</option>
     <option value="2" class="btn btn-outline-warning">2</option>
     <option value="3" class="btn btn-outline-success">3</option>
@@ -30,12 +30,21 @@
 
   <field name="beschreibung" type="editor" label="Beschreibung" buttons="image" hide="readmore, pagebreak" editor="desired|alternative" filter="safehtml" required="false" />
 
-  <field type="spacer" name="bildspacer" label="Einsatzbilder" />
   <field name="einsatzbilder" type="accessiblemedia" label="Einsatzbilder" directory="einsatzberichte" required="false" />
 
-  <field name="presse" type="url" label="Presselink" required="false" />
+  <field name="presseberichte" type="subform" label="Presseberichte" multiple="true" min="0" layout="joomla.form.field.subform.repeatable-table" buttons="add,remove">
+    <form>
+      <field name="title" type="text" label="Titel" required="false" class="w-100" />
+      <field name="url" type="url" label="Link" required="false" class="w-100" />
+    </form>
+  </field>
 
-  <field name="state" type="checkbox" value="1" checked="0" label="Veröffentlicht" required="false" />
+  <field name="published" type="checkbox" label="Veröffentlicht" class="form-switch" value="1" default="0" />
+
+  <field name="created" type="hidden" />
+  <field name="created_by" type="hidden" />
+  <field name="modified" type="hidden" />
+  <field name="modified_by" type="hidden" />
 </form>
 
 <!--

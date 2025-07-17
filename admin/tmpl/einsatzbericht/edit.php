@@ -9,9 +9,9 @@ HTMLHelper::_('behavior.keepalive');
 <form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=einsatzbericht&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="project-form" class="form-validate">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9">
+			<div class="col-md-12">
 				<div class="row">
-					<div class="col-md-9">
+					<div class="col-md-12">
 						<?php
 						foreach ($this->form->getFieldset() as $field) : ?>
 							<?php echo $field->renderField(); ?>
