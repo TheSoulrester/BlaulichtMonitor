@@ -112,7 +112,7 @@ class EinsatzberichtModel extends AdminModel
 	}
 
 	/**
-	 * Speichert einen Einsatzbericht inkl. zugehöriger Einheiten, Fahrzeuge und Einsatzort.
+	 * Speichert einen Einsatzbericht inkl. zugehöriger Einheiten, Fahrzeuge, Einsatzort und Presseberichte.
 	 *
 	 * @param array $data Die zu speichernden Daten.
 	 * @return bool       Erfolg/Misserfolg des Speicherns.
@@ -170,8 +170,11 @@ class EinsatzberichtModel extends AdminModel
 		$einheiten = isset($data['einheiten_id']) ? (array)$data['einheiten_id'] : [];
 		$fahrzeuge = isset($data['fahrzeuge_id']) ? (array)$data['fahrzeuge_id'] : [];
 
+		// Presseberichte aus dem Formular holen (Subform: Array von Arrays mit title und url)
+		$presseberichte = isset($data['presseberichte']) ? (array)$data['presseberichte'] : [];
+
 		// Felder aus $data entfernen, damit sie nicht im Einsatzbericht-Datensatz landen
-		unset($data['einheiten_id'], $data['fahrzeuge_id']);
+		unset($data['einheiten_id'], $data['fahrzeuge_id'], $data['presseberichte']);
 
 		// Einsatzbericht speichern (Standard-Joomla-Methode)
 		$result = parent::save($data);
@@ -219,6 +222,39 @@ class EinsatzberichtModel extends AdminModel
 					->values((int)$einsatzberichtId . ',' . (int)$fahrzeugId);
 				$db->setQuery($query);
 				$db->execute();
+			}
+		}
+
+		// Presseberichte aktualisieren:
+		// 1. Vorherige Presseberichte zum Einsatzbericht löschen
+		$query = $db->getQuery(true)
+			->delete($db->quoteName('#__blaulichtmonitor_einsatzberichte_presse'))
+			->where($db->quoteName('einsatzbericht_id') . ' = ' . (int)$einsatzberichtId);
+		$db->setQuery($query);
+		$db->execute();
+
+		// 2. Neue Presseberichte speichern
+		// Jeder Pressebericht besteht aus title und url
+		if (!empty($presseberichte)) {
+			foreach ($presseberichte as $presse) {
+				$title = isset($presse['title']) ? trim($presse['title']) : '';
+				$url   = isset($presse['url']) ? trim($presse['url']) : '';
+				if ($title !== '' && $url !== '') {
+					$query = $db->getQuery(true)
+						->insert($db->quoteName('#__blaulichtmonitor_einsatzberichte_presse'))
+						->columns([
+							$db->quoteName('einsatzbericht_id'),
+							$db->quoteName('title'),
+							$db->quoteName('url')
+						])
+						->values(
+							(int)$einsatzberichtId . ', ' .
+								$db->quote($title) . ', ' .
+								$db->quote($url)
+						);
+					$db->setQuery($query);
+					$db->execute();
+				}
 			}
 		}
 
