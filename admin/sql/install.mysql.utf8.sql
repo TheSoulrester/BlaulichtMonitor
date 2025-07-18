@@ -124,7 +124,7 @@ CREATE TABLE `#__blaulichtmonitor_einsatzberichte` (
     einsatzleiter_id     INT UNSIGNED DEFAULT NULL,
     article_id           INT UNSIGNED DEFAULT NULL,
     prioritaet           TINYINT DEFAULT NULL,
-    einsatzort_strasse   TEXT DEFAULT NULL,
+    einsatzort_id        INT UNSIGNED DEFAULT NULL,
     alarmierungszeit     DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
     ausrueckzeit         DATETIME DEFAULT NULL,
     einsatzende          DATETIME DEFAULT NULL,

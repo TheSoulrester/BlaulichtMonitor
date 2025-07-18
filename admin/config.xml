@@ -8,4 +8,95 @@
   <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL">
     <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_blaulichtmonitor" section="component" />
   </fieldset>
+  <fieldset name="einsatzbericht_fields" label="Felder für Einsatzbericht anzeigen">
+    <field name="show_alarmierungsart_id" type="radio" label="Alarmierungsart anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzart_id" type="radio" label="Einsatzart anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzkategorie_id" type="radio" label="Einsatzkategorie anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_prioritaet" type="radio" label="Priorität anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+
+    <field name="show_einsatzort_strasse_select" type="radio" label="Einsatzort Vorauswahl anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzort_strasse" type="radio" label="Einsatzort Straße anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzort_hausnummer" type="radio" label="Einsatzort Hausnummer anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzort_plz" type="radio" label="Einsatzort PLZ anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzort_stadt" type="radio" label="Einsatzort Stadt anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+
+    <field name="show_alarmierungszeit" type="radio" label="Alarmierungszeit anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_ausrueckzeit" type="radio" label="Ausrückzeit anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzende" type="radio" label="Einsatzende anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+
+    <field name="show_einsatzleiter_id" type="radio" label="Einsatzleiter anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_people_count" type="radio" label="Mannschaftsstärke anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+
+    <field name="show_einheiten_id" type="radio" label="Einheiten anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_fahrzeuge_id" type="radio" label="Fahrzeuge anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+
+    <field name="show_einsatzkurzbericht" type="radio" label="Einsatzkurzbericht anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_beschreibung" type="radio" label="Beschreibung anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_einsatzbilder" type="radio" label="Einsatzbilder anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_presseberichte" type="radio" label="Presseberichte anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+    <field name="show_published" type="radio" label="Veröffentlicht anzeigen?" default="1" layout="joomla.form.field.radio.switcher">
+      <option value="0">Nein</option>
+      <option value="1">Ja</option>
+    </field>
+  </fieldset>
 </config>

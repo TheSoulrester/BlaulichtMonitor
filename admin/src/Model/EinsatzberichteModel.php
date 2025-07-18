@@ -26,8 +26,8 @@ class EinsatzberichteModel extends ListModel
 				'a.einsatzart_id',
 				'einsatzart_title',
 				'b.title',
-				'einsatzort_strasse',
-				'a.einsatzort_strasse',
+				'einsatzort_id',
+				'a.einsatzort_id',
 				'einsatzkurzbericht',
 				'a.einsatzkurzbericht',
 				'counter_clicks',
@@ -81,7 +81,7 @@ class EinsatzberichteModel extends ListModel
 					$db->quoteName('a.published'),
 					$db->quoteName('a.alarmierungszeit'),
 					$db->quoteName('a.einsatzart_id'),
-					$db->quoteName('a.einsatzort_strasse'),
+					$db->quoteName('a.einsatzort_id'),
 					$db->quoteName('a.einsatzkurzbericht'),
 					$db->quoteName('a.counter_clicks'),
 					$db->quoteName('a.created'),
@@ -90,6 +90,11 @@ class EinsatzberichteModel extends ListModel
 					$db->quoteName('a.modified_by'),
 					// Titel der Einsatzart
 					$db->quoteName('b.title', 'einsatzart_title'),
+					// Einsatzort-Daten (Join-Tabelle)
+					$db->quoteName('o.strasse', 'einsatzort_strasse'),
+					$db->quoteName('o.hausnummer', 'einsatzort_hausnummer'),
+					$db->quoteName('o.plz', 'einsatzort_plz'),
+					$db->quoteName('o.stadt', 'einsatzort_stadt'),
 					// Einheiten als kommaseparierte Liste
 					'(SELECT GROUP_CONCAT(e.title SEPARATOR ", ")
                         FROM #__blaulichtmonitor_einsatzberichte_einheiten ee
@@ -102,7 +107,10 @@ class EinsatzberichteModel extends ListModel
 				]
 			)
 		)->from($db->quoteName('#__blaulichtmonitor_einsatzberichte', 'a'))
+			// Join für Einsatzart
 			->join('LEFT', $db->quoteName('#__blaulichtmonitor_einsatzarten', 'b') . ' ON ' . $db->quoteName('a.einsatzart_id') . ' = ' . $db->quoteName('b.id'))
+			// Join für Einsatzort
+			->join('LEFT', $db->quoteName('#__blaulichtmonitor_einsatzorte', 'o') . ' ON ' . $db->quoteName('a.einsatzort_id') . ' = ' . $db->quoteName('o.id'))
 			// Join für created_by
 			->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.created_by'))
 			// Join für modified_by
@@ -121,7 +129,9 @@ class EinsatzberichteModel extends ListModel
 				'a.id LIKE ' . $search,
 				'a.alarmierungszeit LIKE ' . $search,
 				'b.title LIKE ' . $search, // Einsatzart
-				'a.einsatzort_strasse LIKE ' . $search,
+				'o.strasse LIKE ' . $search,
+				'o.plz LIKE ' . $search,
+				'o.stadt LIKE ' . $search,
 				'a.einsatzkurzbericht LIKE ' . $search,
 				'(SELECT GROUP_CONCAT(e.title SEPARATOR ", ") FROM #__blaulichtmonitor_einsatzberichte_einheiten ee INNER JOIN #__blaulichtmonitor_einheiten e ON ee.einheit_id = e.id WHERE ee.einsatzbericht_id = a.id) LIKE ' . $search,
 				'uc.name LIKE ' . $search, // created_by_name

@@ -6,61 +6,75 @@ use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Factory;
 
+/**
+ * Table-Klasse für Einsatzberichte.
+ * Diese Klasse kapselt die Datenbankoperationen für die Einsatzberichte-Tabelle
+ * und sorgt für die korrekte Vorverarbeitung und Speicherung der Daten.
+ */
 class EinsatzberichtTable extends Table
 {
+	/**
+	 * Konstruktor: Initialisiert die Tabelle mit Name und Primärschlüssel.
+	 *
+	 * @param DatabaseDriver $db Datenbanktreiber-Objekt
+	 */
 	public function __construct(DatabaseDriver $db)
 	{
+		// Initialisiere die Tabelle mit dem Namen und dem Primärschlüssel-Feld
 		parent::__construct('#__blaulichtmonitor_einsatzberichte', 'id', $db);
 	}
 
+	/**
+	 * Bindet die übergebenen Daten an das Table-Objekt.
+	 * Setzt leere Felder auf null und sorgt für die korrekte Vorbelegung.
+	 *
+	 * @param array  $array  Die zu bindenden Daten
+	 * @param string $ignore Felder, die ignoriert werden sollen
+	 * @return bool
+	 */
 	public function bind($array, $ignore = '')
 	{
-		// Leere Datumsfelder auf null setzen
+		// Setze leere Datumsfelder (z.B. aus dem Formular) auf null, damit sie nicht als leere Strings gespeichert werden
 		foreach (['alarmierungszeit', 'ausrueckzeit', 'einsatzende'] as $field) {
 			if (isset($array[$field]) && $array[$field] === '') {
 				$array[$field] = null;
 			}
 		}
-		// Leere Zahlenfelder auf null setzen
+
+		// Setze leere Zahlenfelder (z.B. Personenanzahl) auf null
 		foreach (['people_count'] as $field) {
 			if (isset($array[$field]) && $array[$field] === '') {
 				$array[$field] = null;
 			}
 		}
 
-		/*
-		// Leere Priorität auf null setzen, wenn 0 ausgewählt wurde
-		foreach (['prioritaet'] as $field) {
-			if (isset($array[$field]) && ($array[$field] === '0' || $array[$field] === 0)) {
-				$array[$field] = null;
-			}
-		}
-		*/
-
-		// published auf 0 setzen, wenn nicht gesetzt (Checkbox nicht angehakt)
-		if (!isset($array['published'])) {
-			$array['published'] = 0;
-		}
-
+		// Übergibt die vorbereiteten Daten an die Joomla-Table-Methode
 		return parent::bind($array, $ignore);
 	}
 
+	/**
+	 * Speichert das Table-Objekt in der Datenbank.
+	 * Setzt automatisch die Felder für Erstellungs-/Änderungsdatum und Benutzer.
+	 *
+	 * @param bool $updateNulls Sollen NULL-Werte aktualisiert werden?
+	 * @return bool Erfolg/Misserfolg des Speicherns
+	 */
 	public function store($updateNulls = false)
 	{
-		$user = Factory::getApplication()->getIdentity();
-		$now  = Factory::getDate()->toSql();
+		$user = Factory::getApplication()->getIdentity(); // Hole aktuellen Benutzer
+		$now  = Factory::getDate()->toSql();              // Hole aktuellen Zeitstempel
 
 		if ($this->id) {
-			// Update
+			// Datensatz wird aktualisiert: Änderungsdatum und Benutzer setzen
 			$this->modified    = $now;
 			$this->modified_by = (int) $user->id;
 		} else {
-			// Neu
+			// Neuer Datensatz: Erstellungsdatum und Benutzer setzen
 			$this->created    = $now;
 			$this->created_by = (int) $user->id;
 		}
 
-		// Falls modified_by/created_by leer sind, auf NULL setzen
+		// Falls Benutzerfelder leer sind, auf NULL setzen (Datenbankverträglichkeit)
 		if (empty($this->created_by)) {
 			$this->created_by = null;
 		}
@@ -68,6 +82,7 @@ class EinsatzberichtTable extends Table
 			$this->modified_by = null;
 		}
 
+		// Speichere den Datensatz in der Datenbank
 		return parent::store($updateNulls);
 	}
 }

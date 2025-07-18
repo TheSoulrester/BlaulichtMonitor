@@ -13,12 +13,13 @@ use Joomla\CMS\Language\Text;
  * Für weitere Views kann dieses Template kopiert und angepasst werden.
  */
 
-/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa WebAssetManager für die Einbindung von Scripts und Styles */
 $wa = $this->getDocument()->getWebAssetManager();
-$wa->useScript('table.columns') // Implementierung eines Buttons zum Anzeigen/Ausblenden von Spalten
-	->useScript('multiselect');
+$wa->useScript('table.columns') // Script für das Anzeigen/Ausblenden von Tabellenspalten
+	->useScript('multiselect'); // Script für Mehrfachauswahl in der Tabelle
 
-$user = Factory::getApplication()->getIdentity();
+// Hole aktuellen Benutzer und Sortierparameter aus dem View-State
+$user      = Factory::getApplication()->getIdentity();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -27,41 +28,59 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<div class="row">
 		<div class="col-md-12">
 			<div id="j-main-container" class="j-main-container">
-				<!-- Filter- und Suchformular -->
+				<!-- Such- und Filterformular für die Einsatzberichte-Liste -->
 				<?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
+
+				<!-- Überschrift für Screenreader, im UI ausgeblendet -->
 				<h1 hidden class="page-title">Einsatzberichte</h1>
+
 				<?php if (empty($this->items)) : ?>
+					<!-- Hinweis, falls keine Einsatzberichte gefunden wurden -->
 					<div class="alert alert-info">
-						<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+						<span class="icon-info-circle" aria-hidden="true"></span>
+						<span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
 						<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 					</div>
 				<?php else : ?>
+					<!-- Tabelle mit allen Einsatzberichten -->
 					<div class="table-responsive">
 						<table class="table table-striped itemList" id="einsatzberichteList">
-							<caption class="visually-hidden">BlaulichtMonitor Einsatzberichte
+							<caption class="visually-hidden">
+								BlaulichtMonitor Einsatzberichte
 								<span id="orderedBy">Sortiert nach </span>
 								<span id="filteredBy">Gefiltert nach </span>
 							</caption>
 							<thead>
 								<tr>
+									<!-- Checkbox für Mehrfachauswahl -->
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('grid.checkall'); ?>
 									</th>
+									<!-- Sortierbare Spalte: ID -->
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Status (veröffentlicht/entwurf) -->
 									<th scope="col" class="text-center">Status</th>
+									<!-- Sortierbare Spalte: Alarmierungszeit -->
 									<th scope="col" class="">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'a.alarmierungszeit', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Einsatzart -->
 									<th scope="col" class="">Einsatzart</th>
+									<!-- Einsatzort -->
 									<th scope="col" class="">Einsatzort</th>
+									<!-- Kurzbericht -->
 									<th scope="col" class="">Kurzbericht</th>
+									<!-- Einheiten -->
 									<th scope="col" class="text-center">Einheiten</th>
+									<!-- Sortierbare Spalte: Zugriffe -->
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Zugriffe', 'a.counter_clicks', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Erstellungsdatum (ausgeblendet) -->
 									<th scope="col" class="d-none">Erstellt</th>
+									<!-- Bearbeitungsdatum -->
 									<th scope="col" class="">Bearbeitet</th>
 								</tr>
 							</thead>
@@ -69,13 +88,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php foreach ($this->items as $i => $item) : ?>
 									<?php $canChange = $user->authorise('core.edit.state', 'com_blaulichtmonitor'); ?>
 									<tr>
+										<!-- Checkbox für die Auswahl einzelner Berichte -->
 										<td class="text-center">
 											<?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid'); ?>
 										</td>
-										<td class="text-center"><?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?></td>
+										<!-- Anzeige der Bericht-ID als Badge -->
+										<td class="text-center">
+											<?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?>
+										</td>
+										<!-- Status-Button (veröffentlicht/entwurf) -->
 										<td class="text-center">
 											<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 										</td>
+										<!-- Alarmierungszeit formatiert -->
 										<td>
 											<?php
 											$dt_alarmierungszeit = \DateTime::createFromFormat('Y-m-d H:i:s', $item->alarmierungszeit);
@@ -87,21 +112,58 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 											}
 											?>
 										</td>
-										<td><a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbericht.edit&id=' . $item->id); ?>"><?php echo $item->einsatzart_title; ?></a></td>
-										<td><?php echo $item->einsatzort_strasse; ?></td>
+										<!-- Einsatzart mit Link zur Bearbeitung -->
+										<td>
+											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbericht.edit&id=' . $item->id); ?>">
+												<?php echo $item->einsatzart_title; ?>
+											</a>
+										</td>
+										<!-- Einsatzort (Straße, Hausnummer, PLZ, Stadt) -->
+										<td>
+											<?php
+											$strasse    = $item->einsatzort_strasse ?? '';
+											$hausnummer = $item->einsatzort_hausnummer ?? '';
+											$plz        = $item->einsatzort_plz ?? '';
+											$stadt      = $item->einsatzort_stadt ?? '';
+
+											$adresse = $strasse;
+											if ($hausnummer !== '' && $hausnummer !== null) {
+												$adresse .= ' ' . $hausnummer;
+											}
+											echo htmlspecialchars($adresse);
+
+											if (($plz !== '' && $plz !== null) || ($stadt !== '' && $stadt !== null)) {
+												echo '<br>';
+												if ($plz !== '' && $plz !== null) {
+													echo htmlspecialchars($plz);
+												}
+												if ($stadt !== '' && $stadt !== null) {
+													echo ' ' . htmlspecialchars($stadt);
+												}
+											}
+											?>
+										</td>
+										<!-- Kurzbericht zum Einsatz -->
 										<td><?php echo $item->einsatzkurzbericht; ?></td>
+										<!-- Einheiten als Badges -->
 										<td class="text-center">
 											<div class="d-flex flex-wrap justify-content-between gap-1">
-												<?php $einheiten = explode(',', $item->einheiten_liste);
+												<?php
+												$einheiten = explode(',', $item->einheiten_liste);
 												foreach ($einheiten as $einheit) {
 													$einheit = trim($einheit);
 													if ($einheit) {
 														echo '<span class="flex-fill badge bg-primary border">' . htmlspecialchars($einheit) . '</span>';
 													}
-												} ?>
+												}
+												?>
 											</div>
 										</td>
-										<td class="text-center"><span class="badge bg-success fs-5"><?php echo $item->counter_clicks; ?></span></td>
+										<!-- Zugriffsanzahl als Badge -->
+										<td class="text-center">
+											<span class="badge bg-success fs-5"><?php echo $item->counter_clicks; ?></span>
+										</td>
+										<!-- Erstellungsdatum und Ersteller (ausgeblendet) -->
 										<td>
 											<div class="d-flex flex-column">
 												<?php
@@ -120,6 +182,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 												<?php endif; ?>
 											</div>
 										</td>
+										<!-- Bearbeitungsdatum und Bearbeiter -->
 										<td>
 											<div class="d-flex flex-column">
 												<?php
@@ -147,10 +210,14 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</div>
 		</div>
 	</div>
-	<?php // load the pagination.
-	echo $this->pagination->getListFooter(); ?>
+	<?php
+	// Pagination-Element für die Navigation zwischen Seiten
+	echo $this->pagination->getListFooter();
+	?>
 
+	<!-- Versteckte Felder für die Formularverarbeitung -->
 	<input type="hidden" name="task" value="">
 	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo HTMLHelper::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); // CSRF-Schutz
+	?>
 </form>

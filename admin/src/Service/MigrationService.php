@@ -499,6 +499,27 @@ class MigrationService
 			$beschreibung = (isset($row['desc']) && trim($row['desc']) !== '')
 				? $db->q($row['desc']) : 'NULL';
 
+			// NEU: Einsatzort-ID ermitteln
+			$einsatzort_id = 'NULL';
+			$strasse = trim($row['address'] ?? '');
+			if ($strasse !== '') {
+				$einsatzortQuery = $db->getQuery(true)
+					->select('id')
+					->from($db->qn('#__blaulichtmonitor_einsatzorte'))
+					->where('strasse = ' . $db->q($strasse));
+				$db->setQuery($einsatzortQuery);
+				$einsatzort_id = $db->loadResult();
+				if (!$einsatzort_id) {
+					// Optional: neuen Einsatzort anlegen, falls nicht vorhanden
+					$insertOrt = $db->getQuery(true)
+						->insert($db->qn('#__blaulichtmonitor_einsatzorte'))
+						->columns(['strasse'])
+						->values($db->q($strasse));
+					$db->setQuery($insertOrt)->execute();
+					$einsatzort_id = $db->insertid();
+				}
+			}
+
 			$insert = $db->getQuery(true)
 				->insert($db->qn('#__blaulichtmonitor_einsatzberichte'))
 				->columns([
@@ -510,7 +531,7 @@ class MigrationService
 					'einsatzleiter_id',
 					'article_id',
 					'prioritaet',
-					'einsatzort_strasse',
+					'einsatzort_id', // <-- NEU: ID statt Straße
 					'alarmierungszeit',
 					'ausrueckzeit',
 					'einsatzende',
@@ -532,7 +553,7 @@ class MigrationService
 						$einsatzleiter_id . ', ' .
 						$article_id . ', ' .
 						$prioritaet . ', ' .
-						$this->sqlValue($row['address'], $db) . ', ' .
+						($einsatzort_id !== null ? (int)$einsatzort_id : 'NULL') . ', ' . // <-- NEU: ID statt Straße
 						$this->sqlValue($row['date1'], $db) . ', ' .
 						$ausrueckzeit . ', ' .
 						$einsatzende . ', ' .
