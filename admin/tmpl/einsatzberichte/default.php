@@ -61,7 +61,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 										<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 									</th>
 									<!-- Status (veröffentlicht/entwurf) -->
-									<th scope="col" class="text-center">Status</th>
+									<th scope="col" class="text-center">Veröffentlicht</th>
 									<!-- Sortierbare Spalte: Alarmierungszeit -->
 									<th scope="col" class="">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'a.alarmierungszeit', $listDirn, $listOrder); ?>

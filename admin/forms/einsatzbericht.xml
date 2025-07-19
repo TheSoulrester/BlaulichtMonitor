@@ -8,15 +8,15 @@
   <field name="modified_by" type="hidden" />
 
   <!-- Einsatzart und Kategorie -->
-  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" />
+  <field name="alarmierungsart_id" type="sql" label="Alarmierungsart" sql_select="p.*" sql_from="#__blaulichtmonitor_alarmierungsarten AS p" sql_group="ordering" sql_order="p.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" />
 
   <field name="einsatzart_id" type="sql" label="Einsatzart" sql_select="e.*" sql_from="#__blaulichtmonitor_einsatzarten AS e" sql_group="title" sql_order="e.ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" />
 
-  <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" sql_select="k.*" sql_from="#__blaulichtmonitor_einsatzkategorien AS k" sql_group="title" sql_order="k.ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" />
+  <field name="einsatzkategorie_id" type="sql" label="Einsatzkategorie" sql_select="k.*" sql_from="#__blaulichtmonitor_einsatzkategorien AS k" sql_group="title" sql_order="k.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" />
 
   <!-- Priorität -->
   <!-- https://getbootstrap.com/docs/5.3/components/button-group/ -->
-  <field name="prioritaet" type="radio" label="Priorität" required="true" default="0" class="btn-group">
+  <field name="prioritaet" type="radio" label="Priorität" required="false" default="0" class="btn-group">
     <option value="0" class="btn btn-outline-secondary">/</option>
     <option value="1" class="btn btn-outline-danger">1</option>
     <option value="2" class="btn btn-outline-warning">2</option>
@@ -30,41 +30,41 @@
                                IF(o.hausnummer != '', CONCAT(' ', o.hausnummer), ''),
                                IF(o.plz != '', CONCAT(', ', o.plz), ''),
                                IF(o.stadt != '', CONCAT(' ', o.stadt), '')
-                         ) AS strasse_display" sql_from="#__blaulichtmonitor_einsatzorte AS o" sql_group="strasse_display" sql_order="o.strasse ASC" key_field="id" value_field="strasse_display" required="true" default="" layout="joomla.form.field.list-fancy-select" class="inputbox" />
+                         ) AS strasse_display" sql_from="#__blaulichtmonitor_einsatzorte AS o" sql_group="strasse_display" sql_order="o.strasse ASC" key_field="id" value_field="strasse_display" required="false" default="" layout="joomla.form.field.list-fancy-select" class="inputbox" />
 
   <!-- Freitextfelder für Einsatzort - wird auch über einsatzort_strasse_select befüllt -->
   <field name="einsatzort_strasse" type="text" label="Straße" required="true" />
-  <field name="einsatzort_hausnummer" type="number" label="Hausnummer" required="true" />
-  <field name="einsatzort_plz" type="number" label="PLZ" required="true" />
-  <field name="einsatzort_stadt" type="text" label="Stadt" required="true" />
+  <field name="einsatzort_hausnummer" type="number" label="Hausnummer" required="fasle" />
+  <field name="einsatzort_plz" type="number" label="PLZ" required="false" />
+  <field name="einsatzort_stadt" type="text" label="Stadt" required="false" />
 
   <!-- Zeitangaben -->
   <field name="alarmierungszeit" type="calendar" label="Alarmierungszeit" description="Alarmierungszeit" hint="z.B. 09.06.2025 14:50:00" default="NOW" class="input-small" required="true" filter="user_utc" showtime="true" todaybutton="true" filltable="true" translateformat="true" />
-  <field name="ausrueckzeit" type="calendar" label="Ausrückzeit" description="Ausrückzeit" hint="z.B. 09.06.2025 14:55:00" default="" class="input-small" required="true" filter="user_utc" showtime="true" todaybutton="true" filltable="true" translateformat="true" />
-  <field name="einsatzende" type="calendar" label="Einsatzende" description="Einsatzende" hint="z.B. 09.06.2025 16:00:00" default="" class="input-small" required="true" filter="user_utc" showtime="true" todaybutton="true" filltable="true" translateformat="true" />
+  <field name="ausrueckzeit" type="calendar" label="Ausrückzeit" description="Ausrückzeit" hint="z.B. 09.06.2025 14:55:00" default="" class="input-small" required="false" filter="user_utc" showtime="true" todaybutton="true" filltable="true" translateformat="true" />
+  <field name="einsatzende" type="calendar" label="Einsatzende" description="Einsatzende" hint="z.B. 09.06.2025 16:00:00" default="" class="input-small" required="false" filter="user_utc" showtime="true" todaybutton="true" filltable="true" translateformat="true" />
 
   <!-- Einsatzleiter und Mannschaft -->
-  <field name="einsatzleiter_id" type="sql" label="Einsatzleiter" sql_select="l.*" sql_from="#__blaulichtmonitor_einsatzleiter AS l" sql_group="name" sql_order="l.ordering ASC" key_field="id" value_field="name" required="true" />
+  <field name="einsatzleiter_id" type="sql" label="Einsatzleiter" sql_select="l.*" sql_from="#__blaulichtmonitor_einsatzleiter AS l" sql_group="name" sql_order="l.ordering ASC" key_field="id" value_field="name" required="false" />
 
-  <field name="people_count" type="number" label="Mannschaftsstärke" hint="z.B. 20" required="true" default="" min="0" step="1" validate="number" />
+  <field name="people_count" type="number" label="Mannschaftsstärke" hint="z.B. 20" required="false" default="" min="0" step="1" validate="number" />
 
   <!-- Einheiten und Fahrzeuge -->
-  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
+  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
 
-  <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" multiple="multiple" sql_select="f.*" sql_from="#__blaulichtmonitor_fahrzeuge AS f" sql_group="funkrufname" sql_order="f.ordering ASC" key_field="id" value_field="funkrufname" required="true" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Fahrzeuge auswählen..." />
+  <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" multiple="multiple" sql_select="f.id, CONCAT(f.funkrufname, ' - ', e.title) AS fahrzeug_display, e.title AS einheit_title" sql_from="#__blaulichtmonitor_fahrzeuge AS f LEFT JOIN #__blaulichtmonitor_einheiten AS e ON f.einheit_id = e.id" sql_order="e.ordering ASC, f.ordering ASC" key_field="id" value_field="fahrzeug_display" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Fahrzeuge auswählen..." />
 
   <!-- Einsatzbericht -->
   <field name="einsatzkurzbericht" type="text" label="Einsatzkurzbericht" required="true" />
   <field name="beschreibung" type="editor" label="Beschreibung" buttons="image" hide="readmore, pagebreak" editor="desired|alternative" filter="safehtml" required="false" />
 
   <!-- Einsatzbilder -->
-  <field name="einsatzbilder" type="accessiblemedia" label="Einsatzbilder" directory="einsatzberichte" required="true" />
+  <field name="einsatzbilder" type="accessiblemedia" label="Einsatzbilder" directory="einsatzberichte" required="false" />
 
   <!-- Presseberichte als Subform -->
   <field name="presseberichte" type="subform" label="Presseberichte" multiple="true" min="0" layout="joomla.form.field.subform.repeatable-table" buttons="add,remove">
     <form>
-      <field name="title" type="text" label="Titel" required="true" class="w-100" />
-      <field name="url" type="url" label="Link" required="true" class="w-100" />
+      <field name="title" type="text" label="Titel" required="false" class="w-100" />
+      <field name="url" type="url" label="Link" required="false" class="w-100" />
     </form>
   </field>
 
