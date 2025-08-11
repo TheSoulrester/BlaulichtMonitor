@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <!-- Systemfelder -->
+  <field name="id" type="hidden" label="ID" />
+  <field name="created" type="hidden" />
+  <field name="created_by" type="hidden" />
+  <field name="modified" type="hidden" />
+  <field name="modified_by" type="hidden" />
+  <field name="ordering" type="hidden" />
+
+  <!-- Freitextfelder für Title -->
+  <field name="title" type="text" label="Titel" required="true" />
+
+  <!-- Bild -->
+  <field name="image_url" type="accessiblemedia" label="Alarmierungsart-Bild" directory="alarmierungsarten" required="false" />
+</form>
+
+<!--
+  Hinweise:
+  - Siehe Joomla Doku für weitere Feldtypen und Validierung:
+    https://manual.joomla.org/docs/general-concepts/forms-fields/standard-fields/
+    https://manual.joomla.org/docs/general-concepts/forms/server-side-validation/#server-side-validation
+-->

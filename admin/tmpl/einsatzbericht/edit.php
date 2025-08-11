@@ -240,5 +240,26 @@ function hasVisibleFields($fields, $hideFields, $form)
 				}
 			});
 		}
+
+		// autocomplete für das Textfeld
+		const input = document.querySelector('[name="jform[einsatzkurzbericht]"]');
+		if (!input) return;
+		let list = document.createElement('datalist');
+		list.id = 'einsatzkurzbericht-list';
+		input.setAttribute('list', list.id);
+		input.parentNode.appendChild(list);
+
+		input.addEventListener('input', function() {
+			fetch('index.php?option=com_blaulichtmonitor&task=einsatzbericht.autocomplete&term=' + encodeURIComponent(input.value))
+				.then(response => response.json())
+				.then(data => {
+					list.innerHTML = '';
+					data.forEach(item => {
+						let option = document.createElement('option');
+						option.value = item;
+						list.appendChild(option);
+					});
+				});
+		});
 	});
 </script>

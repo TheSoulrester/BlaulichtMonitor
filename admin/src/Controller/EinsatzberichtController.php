@@ -77,4 +77,28 @@ class EinsatzberichtController extends FormController
 		// Beende die Joomla-Anwendung, damit keine weitere Ausgabe erfolgt
 		$this->app->close();
 	}
+
+	/**
+	 * AJAX-Methode: Autocomplete für Einsatzberichte.
+	 * Gibt eine JSON-Liste von Einsatzkurzberichten zurück, die dem Suchbegriff entsprechen.
+	 *
+	 * Erwartet: $_GET['term'] mit dem Suchbegriff.
+	 * Antwort: JSON-Array mit passenden Einsatzkurzberichten.
+	 */
+	public function autocomplete()
+	{
+		$input = Factory::getApplication()->input;
+		$term = $input->getString('term');
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true)
+			->select('einsatzkurzbericht')
+			->from('#__blaulichtmonitor_einsatzberichte')
+			->where('einsatzkurzbericht LIKE ' . $db->quote('%' . $term . '%'))
+			->group('einsatzkurzbericht')
+			->order('einsatzkurzbericht ASC');
+		$db->setQuery($query, 0, 10);
+		$results = $db->loadColumn();
+		echo json_encode($results);
+		exit;
+	}
 }

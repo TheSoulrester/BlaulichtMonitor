@@ -54,7 +54,7 @@
   <field name="fahrzeuge_id" type="sql" label="Fahrzeuge" multiple="multiple" sql_select="f.id, CONCAT(f.funkrufname, ' - ', e.title) AS fahrzeug_display, e.title AS einheit_title" sql_from="#__blaulichtmonitor_fahrzeuge AS f LEFT JOIN #__blaulichtmonitor_einheiten AS e ON f.einheit_id = e.id" sql_order="e.ordering ASC, f.ordering ASC" key_field="id" value_field="fahrzeug_display" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Fahrzeuge auswählen..." />
 
   <!-- Einsatzbericht -->
-  <field name="einsatzkurzbericht" type="text" label="Einsatzkurzbericht" required="true" />
+  <field name="einsatzkurzbericht" type="text" label="Einsatzkurzbericht" required="true" autocomplete="on" hint="Einsatzkurzbericht eingeben..." />
   <field name="beschreibung" type="editor" label="Beschreibung" buttons="image" hide="readmore, pagebreak" editor="desired|alternative" filter="safehtml" required="false" />
 
   <!-- Einsatzbilder -->

@@ -7,7 +7,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
 /**
- * Template für die Einsatzberichte-Übersicht im Backend.
+ * Template für die Alarmierungsarten-Übersicht im Backend.
  * Stellt das HTML für die Listenansicht bereit, inklusive Filterformular, Tabelle und Pagination.
  * Nutzt Daten aus dem View (HtmlView).
  * Für weitere Views kann dieses Template kopiert und angepasst werden.
@@ -22,36 +22,46 @@ $wa->useScript('table.columns') // Script für das Anzeigen/Ausblenden von Tabel
 $user      = Factory::getApplication()->getIdentity();
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
+
+$canOrder = $user->authorise('core.edit.state', 'com_blaulichtmonitor');
+$saveOrder = $listOrder == 'a.ordering';
+if ($saveOrder) {
+	$saveOrderingUrl = 'index.php?option=com_blaulichtmonitor&task=alarmierungsarten.saveOrderAjax&tmpl=component';
+	HTMLHelper::_('draggablelist.draggable', 'alarmierungsartenList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
 ?>
 
-<form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=einsatzberichte'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_blaulichtmonitor&view=alarmierungsarten'); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="row">
 		<div class="col-md-12">
 			<div id="j-main-container" class="j-main-container">
-				<!-- Such- und Filterformular für die Einsatzberichte-Liste -->
+				<!-- Such- und Filterformular für die Alarmierungsarten-Liste -->
 				<?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 
 				<!-- Überschrift für Screenreader, im UI ausgeblendet -->
-				<h1 hidden class="page-title">Einsatzberichte</h1>
+				<h1 hidden class="page-title">Alarmierungsarten</h1>
 
 				<?php if (empty($this->items)) : ?>
-					<!-- Hinweis, falls keine Einsatzberichte gefunden wurden -->
+					<!-- Hinweis, falls keine Alarmierungsarten gefunden wurden -->
 					<div class="alert alert-info">
 						<span class="icon-info-circle" aria-hidden="true"></span>
 						<span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
 						<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 					</div>
 				<?php else : ?>
-					<!-- Tabelle mit allen Einsatzberichten -->
+					<!-- Tabelle mit allen Alarmierungsartenn -->
 					<div class="table-responsive">
-						<table class="table table-striped itemList" id="einsatzberichteList">
+						<table class="table table-striped itemList" id="alarmierungsartenList">
 							<caption class="visually-hidden">
-								BlaulichtMonitor Einsatzberichte
+								BlaulichtMonitor Alarmierungsarten
 								<span id="orderedBy">Sortiert nach </span>
 								<span id="filteredBy">Gefiltert nach </span>
 							</caption>
 							<thead>
 								<tr>
+									<th width="1%" class="text-center">
+										<?php echo HTMLHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'icon-menu'); ?>
+									</th>
 									<!-- Checkbox für Mehrfachauswahl -->
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('grid.checkall'); ?>
@@ -60,23 +70,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 									</th>
-									<!-- Status (veröffentlicht/entwurf) -->
-									<th scope="col" class="text-center">Veröffentlicht</th>
-									<!-- Sortierbare Spalte: Alarmierungszeit -->
+									<!-- Sortierbare Spalte: Title -->
 									<th scope="col" class="">
-										<?php echo HTMLHelper::_('searchtools.sort', 'Alarmierungszeit', 'a.alarmierungszeit', $listDirn, $listOrder); ?>
-									</th>
-									<!-- Einsatzart -->
-									<th scope="col" class="">Einsatzart</th>
-									<!-- Einsatzort -->
-									<th scope="col" class="">Einsatzort</th>
-									<!-- Kurzbericht -->
-									<th scope="col" class="">Kurzbericht</th>
-									<!-- Einheiten -->
-									<th scope="col" class="text-center">Einheiten</th>
-									<!-- Sortierbare Spalte: Zugriffe -->
-									<th scope="col" class="text-center">
-										<?php echo HTMLHelper::_('searchtools.sort', 'Zugriffe', 'a.counter_clicks', $listDirn, $listOrder); ?>
+										<?php echo HTMLHelper::_('searchtools.sort', 'Title', 'a.title', $listDirn, $listOrder); ?>
 									</th>
 									<!-- Erstellungsdatum -->
 									<th scope="col" class="">Erstellt</th>
@@ -88,6 +84,18 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php foreach ($this->items as $i => $item) : ?>
 									<?php $canChange = $user->authorise('core.edit.state', 'com_blaulichtmonitor'); ?>
 									<tr>
+										<td class="order text-center">
+											<?php
+											$iconClass = '';
+											if (!$canOrder || !$saveOrder) {
+												$iconClass = 'inactive tip-top';
+											}
+											?>
+											<span class="sortable-handler <?php echo $iconClass; ?>">
+												<span class="icon-menu" aria-hidden="true"></span>
+											</span>
+											<input type="hidden" name="order[]" value="<?php echo $item->ordering; ?>" />
+										</td>
 										<!-- Checkbox für die Auswahl einzelner Berichte -->
 										<td class="text-center">
 											<?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid'); ?>
@@ -96,72 +104,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 										<td class="text-center">
 											<?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?>
 										</td>
-										<!-- Status-Button (veröffentlicht/entwurf) -->
-										<td class="text-center">
-											<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-										</td>
-										<!-- Alarmierungszeit formatiert -->
+										<!-- Title mit Link zur Bearbeitung -->
 										<td>
-											<?php
-											$dt_alarmierungszeit = \DateTime::createFromFormat('Y-m-d H:i:s', $item->alarmierungszeit);
-											if ($dt_alarmierungszeit) {
-												echo $dt_alarmierungszeit->format('d.m.Y') . '<br>';
-												echo $dt_alarmierungszeit->format('H:i') . ' Uhr';
-											} else {
-												echo htmlspecialchars($item->alarmierungszeit);
-											}
-											?>
-										</td>
-										<!-- Einsatzart mit Link zur Bearbeitung -->
-										<td>
-											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbericht.edit&id=' . $item->id); ?>">
-												<?php echo $item->einsatzart_title; ?>
+											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=alarmierungsart.edit&id=' . $item->id); ?>">
+												<?php echo $item->title; ?>
 											</a>
-										</td>
-										<!-- Einsatzort (Straße, Hausnummer, PLZ, Stadt) -->
-										<td>
-											<?php
-											$strasse    = $item->einsatzort_strasse ?? '';
-											$hausnummer = $item->einsatzort_hausnummer ?? '';
-											$plz        = $item->einsatzort_plz ?? '';
-											$stadt      = $item->einsatzort_stadt ?? '';
-
-											$adresse = $strasse;
-											if ($hausnummer !== '' && $hausnummer !== null) {
-												$adresse .= ' ' . $hausnummer;
-											}
-											echo htmlspecialchars($adresse);
-
-											if (($plz !== '' && $plz !== null) || ($stadt !== '' && $stadt !== null)) {
-												echo '<br>';
-												if ($plz !== '' && $plz !== null) {
-													echo htmlspecialchars($plz);
-												}
-												if ($stadt !== '' && $stadt !== null) {
-													echo ' ' . htmlspecialchars($stadt);
-												}
-											}
-											?>
-										</td>
-										<!-- Kurzbericht zum Einsatz -->
-										<td><?php echo $item->einsatzkurzbericht; ?></td>
-										<!-- Einheiten als Badges -->
-										<td class="text-center">
-											<div class="d-flex flex-wrap justify-content-between gap-1">
-												<?php
-												$einheiten = explode(',', $item->einheiten_liste);
-												foreach ($einheiten as $einheit) {
-													$einheit = trim($einheit);
-													if ($einheit) {
-														echo '<span class="flex-fill badge bg-primary border">' . htmlspecialchars($einheit) . '</span>';
-													}
-												}
-												?>
-											</div>
-										</td>
-										<!-- Zugriffsanzahl als Badge -->
-										<td class="text-center">
-											<span class="badge bg-success fs-5"><?php echo $item->counter_clicks; ?></span>
 										</td>
 										<!-- Erstellungsdatum und Ersteller (ausgeblendet) -->
 										<td>

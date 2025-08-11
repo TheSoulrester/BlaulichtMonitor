@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Formular-Definition für die Filter- und Sortierfelder der Alarmierungsarten-Übersicht im Backend.
+  Wird vom Model geladen, um das Filterformular (Suchfeld, Sortierung, Limit) im View bereitzustellen.
+  Anpassbar für weitere Views durch Kopieren und Anpassen der Felder.
+-->
+<form>
+  <fields name="filter">
+    <!-- Suchfeld -->
+    <field name="search" type="text" label="Suche" description="Suche nach Title" hint="Suche"/>
+  </fields>
+  <fields name="list">
+    <!-- Dropdown für Sortierung nach verschiedenen Spalten -->
+    <field name="fullordering" type="list" label="JGLOBAL_SORT_BY" default="a.ordering ASC" class="js-select-submit-on-change" validate="options">
+      <option value="">JGLOBAL_SORT_BY</option>
+      <option value="a.title ASC">Titel aufsteigend</option>
+      <option value="a.title DESC">Titel absteigend</option>
+      <option value="a.ordering ASC">Sortierung aufsteigend</option>
+      <option value="a.ordering DESC">Sortierung absteigend</option>
+    </field>
+    <!-- Limit-Auswahl für Anzahl der angezeigten Einträge -->
+    <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="25" class="js-select-submit-on-change" />
+  </fields>
+</form>

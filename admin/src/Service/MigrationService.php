@@ -789,6 +789,11 @@ class MigrationService
 	}
 
 	/**
+	 * Migration der Einsatzbericht-Bilder
+	 */
+	public function migrateEinsatzberichtBilder() {}
+
+	/**
 	 * Führt alle Migrationen aus
 	 */
 	public function migrateAll(): array
@@ -827,6 +832,7 @@ class MigrationService
 			'#__blaulichtmonitor_einsatzberichte_presse' => $this->migrateEinsatzberichtePresse(),
 
 			// Weitere Migrationen hier ergänzen, falls benötigt
+			//'#__blaulichtmonitor_einsatzbilder' => $this->migrateEinsatzberichtBilder(),
 		];
 	}
 }
