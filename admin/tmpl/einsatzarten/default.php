@@ -106,7 +106,7 @@ if ($saveOrder) {
 										</td>
 										<!-- Title mit Link zur Bearbeitung -->
 										<td>
-											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzarten.edit&id=' . $item->id); ?>">
+											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzart.edit&id=' . $item->id); ?>">
 												<?php echo $item->title; ?>
 											</a>
 										</td>
