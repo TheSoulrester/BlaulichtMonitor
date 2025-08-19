@@ -12,7 +12,7 @@
   <field name="title" type="text" label="Titel" required="true" />
 
   <!-- Bild -->
-  <field name="image_url" type="accessiblemedia" label="Alarmierungsart-Bild" directory="alarmierungsarten" required="false" />
+  <field name="icon_url" type="accessiblemedia" label="Alarmierungsart-Bild" directory="alarmierungsarten" required="false" />
 </form>
 
 <!--

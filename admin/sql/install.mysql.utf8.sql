@@ -5,7 +5,7 @@
 CREATE TABLE `#__blaulichtmonitor_alarmierungsarten` (
     id                   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title                VARCHAR(255) NOT NULL,
-    image_url            VARCHAR(255) DEFAULT NULL,
+    icon_url            VARCHAR(255) DEFAULT NULL,
     ordering             INT UNSIGNED DEFAULT NULL,
     created              DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_by           INT,

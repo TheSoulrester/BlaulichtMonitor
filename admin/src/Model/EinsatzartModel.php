@@ -82,9 +82,9 @@ class EinsatzartModel extends AdminModel
 	public function save($data)
 	{
 		if (isset($data['icon_url']) && is_array($data['icon_url'])) {
-        $rawPath = $data['icon_url']['imagefile'] ?? '';
-        $data['icon_url'] = explode('#', $rawPath)[0];
-    }
+			$rawPath = $data['icon_url']['imagefile'] ?? '';
+			$data['icon_url'] = explode('#', $rawPath)[0];
+		}
 		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		// Daten aus dem Formular holen und ggf. trimmen
