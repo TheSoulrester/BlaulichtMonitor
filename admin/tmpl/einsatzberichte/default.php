@@ -98,7 +98,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 										</td>
 										<!-- Status-Button (veröffentlicht/entwurf) -->
 										<td class="text-center">
-											<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+											<?php
+											// Ursprünglich mit publish_up und publish_down:
+											//echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb', $item->publish_up, $item->publish_down);
+
+											// Nur published verwenden:
+											echo HTMLHelper::_('jgrid.published', $item->published, $i, 'einsatzberichte.', $canChange, 'cb'); ?>
 										</td>
 										<!-- Alarmierungszeit formatiert -->
 										<td>

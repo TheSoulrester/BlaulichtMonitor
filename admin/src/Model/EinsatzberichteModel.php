@@ -84,6 +84,7 @@ class EinsatzberichteModel extends ListModel
 					$db->quoteName('a.einsatzort_id'),
 					$db->quoteName('a.einsatzkurzbericht'),
 					$db->quoteName('a.counter_clicks'),
+					$db->quoteName('a.published'),
 					$db->quoteName('a.created'),
 					$db->quoteName('a.modified'),
 					$db->quoteName('a.created_by'),
