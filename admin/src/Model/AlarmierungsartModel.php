@@ -81,6 +81,10 @@ class AlarmierungsartModel extends AdminModel
 	 */
 	public function save($data)
 	{
+		if (isset($data['image_url']) && is_array($data['image_url'])) {
+        $rawPath = $data['image_url']['imagefile'] ?? '';
+        $data['image_url'] = explode('#', $rawPath)[0];
+			
 		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		// Daten aus dem Formular holen und ggf. trimmen
