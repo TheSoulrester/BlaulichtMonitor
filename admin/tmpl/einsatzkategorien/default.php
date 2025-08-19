@@ -136,16 +136,18 @@ if ($saveOrder) {
 												<?php echo $item->title; ?>
 											</a>
 										</td>
-										<!-- Erstellungsdatum und Ersteller (ausgeblendet) -->
+										<!-- Erstellungsdatum und Ersteller -->
 										<td>
 											<div class="d-flex flex-column">
 												<?php
-												$dt_created = \DateTime::createFromFormat('Y-m-d H:i:s', $item->created);
+												$dt_created = !empty($item->created) ? \DateTime::createFromFormat('Y-m-d H:i:s', $item->created) : false;
 												if ($dt_created) {
 													echo '<span>' . $dt_created->format('d.m.Y') . '</span>';
 													echo '<span>' . $dt_created->format('H:i') . ' Uhr</span>';
-												} else {
+												} elseif (!empty($item->created)) {
 													echo '<span>' . htmlspecialchars($item->created) . '</span>';
+												} else {
+													echo '<span>-</span>';
 												}
 												?>
 												<?php if (!empty($item->created_by_name)) : ?>
@@ -159,12 +161,14 @@ if ($saveOrder) {
 										<td>
 											<div class="d-flex flex-column">
 												<?php
-												$dt_modified = \DateTime::createFromFormat('Y-m-d H:i:s', $item->modified);
+												$dt_modified = !empty($item->modified) ? \DateTime::createFromFormat('Y-m-d H:i:s', $item->modified) : false;
 												if ($dt_modified) {
 													echo '<span>' . $dt_modified->format('d.m.Y') . '</span>';
 													echo '<span>' . $dt_modified->format('H:i') . ' Uhr</span>';
-												} else {
+												} elseif (!empty($item->modified)) {
 													echo '<span>' . htmlspecialchars($item->modified) . '</span>';
+												} else {
+													echo '<span>-</span>';
 												}
 												?>
 												<?php if (!empty($item->modified_by_name)) : ?>
