@@ -19,14 +19,14 @@ use Joomla\Utilities\ArrayHelper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-class EinsatzartenController extends AdminController
+class EinsatkategorienController extends AdminController
 {
 	/**
 	 * Prefix für Sprachstrings.
 	 *
 	 * @var string
 	 */
-	protected $text_prefix = 'COM_BLAULICHTMONITOR_EINSATZBERICHTE';
+	protected $text_prefix = 'COM_BLAULICHTMONITOR_EINSATZKATEGORIEN';
 
 	public function __construct($config = [], ?MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
