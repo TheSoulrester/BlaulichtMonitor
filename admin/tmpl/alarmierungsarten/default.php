@@ -111,18 +111,24 @@ if ($saveOrder) {
 										</td>
 										<!-- Icon anzeigen -->
 										<td class="text-center">
-											<?php if (!empty($item->icon_url)) : ?>
-												<?php
+											<?php
+											$imgSrc = '';
+											if (!empty($item->icon_url)) {
 												// Absoluten Pfad erzeugen
 												$imgSrc = Uri::root() . ltrim($item->icon_url, '/');
-												?>
-												<img src="<?php echo htmlspecialchars($imgSrc); ?>"
-													alt="<?php echo htmlspecialchars($item->title); ?>"
-													style="max-width:32px;max-height:32px;object-fit:contain;border-radius:4px;"
-													loading="lazy" />
-											<?php else : ?>
-												<span class="text-muted">–</span>
-											<?php endif; ?>
+												// Pfad auf dem Server prüfen
+												$serverPath = JPATH_ROOT . '/' . ltrim($item->icon_url, '/');
+												if (is_file($serverPath)) {
+													// Bild existiert
+													echo '<img src="' . htmlspecialchars($imgSrc) . '" alt="' . htmlspecialchars($item->title) . '" style="max-width:32px;max-height:32px;object-fit:contain;border-radius:4px;" loading="lazy" />';
+												} else {
+													// Bild fehlt
+													echo '<span class="text-danger" title="Bilddatei nicht gefunden"><span class="icon-warning"></span> fehlt</span>';
+												}
+											} else {
+												echo '<span class="text-muted">–</span>';
+											}
+											?>
 										</td>
 										<!-- Title mit Link zur Bearbeitung -->
 										<td>
