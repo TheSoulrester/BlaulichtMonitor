@@ -36,9 +36,14 @@ CREATE TABLE `#__blaulichtmonitor_einsatzkategorien` (
     modified_by          INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE `#__blaulichtmonitor_organisation` (
+CREATE TABLE `#__blaulichtmonitor_organisationen` (
     id                   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name                 VARCHAR(100) NOT NULL
+    title                VARCHAR(100) NOT NULL,
+    ordering             INT UNSIGNED DEFAULT NULL,
+    created              DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_by           INT,
+    modified             DATETIME,
+    modified_by          INT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 DEFAULT COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `#__blaulichtmonitor_einsatzleiter` (
