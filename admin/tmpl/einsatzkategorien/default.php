@@ -5,6 +5,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Template für die Einsatzkategorien-Übersicht im Backend.
@@ -70,6 +71,10 @@ if ($saveOrder) {
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Icon-Spalte -->
+									<th scope="col" class="text-center">
+										<?php echo Text::_('Icon'); ?>
+									</th>
 									<!-- Sortierbare Spalte: Title -->
 									<th scope="col" class="">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Title', 'a.title', $listDirn, $listOrder); ?>
@@ -103,6 +108,21 @@ if ($saveOrder) {
 										<!-- Anzeige der Bericht-ID als Badge -->
 										<td class="text-center">
 											<?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?>
+										</td>
+										<!-- Icon anzeigen -->
+										<td class="text-center">
+											<?php if (!empty($item->icon_url)) : ?>
+												<?php
+												// Absoluten Pfad erzeugen
+												$imgSrc = Uri::root() . ltrim($item->icon_url, '/');
+												?>
+												<img src="<?php echo htmlspecialchars($imgSrc); ?>"
+													alt="<?php echo htmlspecialchars($item->title); ?>"
+													style="max-width:32px;max-height:32px;object-fit:contain;border-radius:4px;"
+													loading="lazy" />
+											<?php else : ?>
+												<span class="text-muted">–</span>
+											<?php endif; ?>
 										</td>
 										<!-- Title mit Link zur Bearbeitung -->
 										<td>

@@ -62,6 +62,7 @@ class EinsatzartenModel extends ListModel
 				[
 					$db->quoteName('a.id'),
 					$db->quoteName('a.title'),
+					$db->quoteName('a.icon_url'),
 					$db->quoteName('a.ordering'),
 					$db->quoteName('a.created'),
 					$db->quoteName('a.modified'),
