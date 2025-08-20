@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <!-- Systemfelder -->
+  <field name="id" type="hidden" label="ID" />
+  <field name="created" type="hidden" />
+  <field name="created_by" type="hidden" />
+  <field name="modified" type="hidden" />
+  <field name="modified_by" type="hidden" />
+  <field name="ordering" type="hidden" />
+
+  <!-- Freitextfelder für Title -->
+  <field name="title" type="text" label="Titel" required="true" />
+  <!-- Freitextfelder für Name -->
+  <field name="name" type="text" label="Name" required="true" />
+  <!-- Freitextfelder für URL -->
+  <field name="url" type="url" label="URL" required="true" relative="true"/>
+  <!-- Freitextfelder für Beschreibung -->
+  <field name="beschreibung" type="editor" label="Beschreibung" required="false" filter="safehtml" />
+  <!-- Freitextfelder für Standort-Title -->
+  <field name="standort_title" type="text" label="Standort Titel" required="true" />
+  <!-- Freitextfelder für Standort-Strasse -->
+  <field name="standort_strasse" type="text" label="Standort Strasse" required="true" />
+  <!-- Freitextfelder für Standort-Hausnummer -->
+  <field name="standort_hausnummer" type="text" label="Standort Hausnummer" required="true" />
+  <!-- Freitextfelder für Standort-PLZ -->
+  <field name="standort_plz" type="text" label="Standort PLZ" required="true" />
+  <!-- Freitextfelder für Standort-Ort -->
+  <field name="standort_ort" type="text" label="Standort Ort" required="true" />
+  <!-- Freitextfelder für Organisation-ID -->
+  <field name="organisation_id" type="sql" label="Organisation" sql_select="o.*" sql_from="#__blaulichtmonitor_organisationen AS o" sql_group="title" sql_order="o.id ASC" key_field="id" value_field="title" required="true" />
+</form>
+
+<!--
+  Hinweise:
+  - Siehe Joomla Doku für weitere Feldtypen und Validierung:
+    https://manual.joomla.org/docs/general-concepts/forms-fields/standard-fields/
+    https://manual.joomla.org/docs/general-concepts/forms/server-side-validation/#server-side-validation
+-->

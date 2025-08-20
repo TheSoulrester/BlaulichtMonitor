@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Manual: https://manual.joomla.org/docs/building-extensions/install-update/installation/manifest/ -->
 <extension type="component" version="4.0" method="upgrade">
   <name>BlaulichtMonitor</name>
   <creationDate>27.06.2025</creationDate>
