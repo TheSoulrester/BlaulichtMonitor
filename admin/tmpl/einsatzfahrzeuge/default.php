@@ -79,6 +79,8 @@ if ($saveOrder) {
 									<th scope="col" class="">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Funkrufname', 'a.funkrufname', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Einheiten -->
+									<th scope="col" class="text-center">Einheit</th>
 									<!-- Erstellungsdatum -->
 									<th scope="col" class="">Erstellt</th>
 									<!-- Bearbeitungsdatum -->
@@ -134,6 +136,19 @@ if ($saveOrder) {
 											<a href="<?php echo Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzfahrzeug.edit&id=' . $item->id); ?>">
 												<?php echo $item->funkrufname; ?>
 											</a>
+										</td>
+										<!-- Einheiten als Badges -->
+										<td class="text-center">
+											<div class="d-flex flex-wrap justify-content-between gap-1">
+												<?php
+												$einheit = $item->einheit_title;
+												if ($einheit) {
+													echo '<span class="flex-fill badge bg-primary border">' . htmlspecialchars($einheit) . '</span>';
+												} else {
+													echo '<span class="text-muted">–</span>';
+												}
+												?>
+											</div>
 										</td>
 										<!-- Erstellungsdatum und Ersteller -->
 										<td>

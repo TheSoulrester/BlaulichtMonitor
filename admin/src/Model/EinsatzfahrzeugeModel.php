@@ -26,6 +26,8 @@ class EinsatzfahrzeugeModel extends ListModel
 				'a.beschreibung',
 				'ordering',
 				'a.ordering',
+				'einheit_title',
+				'e.title',
 			];
 		}
 		parent::__construct($config);
@@ -76,9 +78,12 @@ class EinsatzfahrzeugeModel extends ListModel
 					$db->quoteName('a.modified_by'),
 					$db->quoteName('uc.name', 'created_by_name'),
 					$db->quoteName('um.name', 'modified_by_name'),
+					$db->quoteName('e.title', 'einheit_title'),
 				]
 			)
 		)->from($db->quoteName('#__blaulichtmonitor_fahrzeuge', 'a'))
+			// hinzugefügt: Join auf Einheiten
+			->join('LEFT', $db->quoteName('#__blaulichtmonitor_einheiten', 'e') . ' ON ' . $db->quoteName('e.id') . ' = ' . $db->quoteName('a.einheit_id'))
 			// Join für created_by
 			->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.created_by'))
 			// Join für modified_by
@@ -97,6 +102,7 @@ class EinsatzfahrzeugeModel extends ListModel
 				'a.id LIKE ' . $search,
 				'a.funkrufname LIKE ' . $search,
 				'a.beschreibung LIKE ' . $search,
+				'e.title LIKE ' . $search,
 				'uc.name LIKE ' . $search, // created_by_name
 				'um.name LIKE ' . $search, // modified_by_name
 			];
