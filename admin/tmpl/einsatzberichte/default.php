@@ -124,7 +124,7 @@ if (!empty($this->items)) {
 												<?php echo $count === 0 ? 'disabled' : ''; ?>>
 												<span>Bilder</span>
 												<?php if ($count > 0): ?>
-													<span class="badge rounded-pill text-bg-light position-static"><?php echo (int) $count; ?></span>
+													<span class="badge text-bg-light position-static"><?php echo (int) $count; ?></span>
 												<?php endif; ?>
 											</button>
 
