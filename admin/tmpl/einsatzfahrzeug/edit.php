@@ -13,7 +13,7 @@ HTMLHelper::_('behavior.keepalive');
 	<div class="container">
 		<?php
 		// Abschnitt: Funkrufname & Fahrzeug im Dienst
-		$fieldsEinsatzart = ['funkrufname', 'in_dienst', 'einheiten_id'];
+		$fieldsEinsatzart = ['funkrufname', 'in_dienst', 'einheit_id'];
 		echo '<div class="card mb-4"><div class="card-header fw-bold">Fahrzeug & Einheit</div><div class="card-body"><div class="row">';
 		foreach ($fieldsEinsatzart as $fieldName) {
 			$field = $this->form->getField($fieldName);

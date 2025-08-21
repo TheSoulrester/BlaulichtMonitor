@@ -20,8 +20,8 @@
     <option value="1">Ja</option>
     <option value="0">Nein</option>
   </field>
-  <!-- Einheiten ID -->
-  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
+  <!-- Einheit ID -->
+  <field name="einheit_id" type="sql" label="Einheit" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" class="inputbox" hint="Einheit auswählen..." />
 
 
 </form>
