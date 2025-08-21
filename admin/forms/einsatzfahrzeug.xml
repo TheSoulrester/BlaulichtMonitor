@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+  <!-- Systemfelder -->
+  <field name="id" type="hidden" label="ID" />
+  <field name="created" type="hidden" />
+  <field name="created_by" type="hidden" />
+  <field name="modified" type="hidden" />
+  <field name="modified_by" type="hidden" />
+  <field name="ordering" type="hidden" />
+
+  <!-- Freitextfeld für Funkrufname -->
+  <field name="funkrufname" type="text" label="Funkrufname" required="true" />
+  <!-- Freitextfeld für Beschreibung -->
+  <field name="beschreibung" type="editor" label="Beschreibung" buttons="image" hide="readmore, pagebreak" editor="desired|alternative" filter="safehtml" required="false" />
+  <!-- Bild -->
+  <field name="bild_url" type="accessiblemedia" label="Fahrzeug-Bild" directory="fahrzeuge" required="false" />
+  <!-- URL -->
+  <field name="url" type="text" label="URL" required="false" />
+  <field name="in_dienst"
+       type="list"
+       label="Fahrzeug ist im Dienst"
+       default="1">
+    <option value="1">Ja</option>
+    <option value="0">Nein</option>
+</field>
+<!-- Einheiten ID -->
+<field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
+
+
+</form>
+
+<!--
+  Hinweise:
+  - Siehe Joomla Doku für weitere Feldtypen und Validierung:
+    https://manual.joomla.org/docs/general-concepts/forms-fields/standard-fields/
+    https://manual.joomla.org/docs/general-concepts/forms/server-side-validation/#server-side-validation
+-->
