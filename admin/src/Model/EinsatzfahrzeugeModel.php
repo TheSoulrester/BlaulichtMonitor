@@ -28,6 +28,8 @@ class EinsatzfahrzeugeModel extends ListModel
 				'a.ordering',
 				'einheit_title',
 				'e.title',
+				'einheit_name',
+				'e.name',
 			];
 		}
 		parent::__construct($config);
@@ -79,6 +81,7 @@ class EinsatzfahrzeugeModel extends ListModel
 					$db->quoteName('uc.name', 'created_by_name'),
 					$db->quoteName('um.name', 'modified_by_name'),
 					$db->quoteName('e.title', 'einheit_title'),
+					$db->quoteName('e.name', 'einheit_name'),
 				]
 			)
 		)->from($db->quoteName('#__blaulichtmonitor_fahrzeuge', 'a'))
@@ -103,6 +106,7 @@ class EinsatzfahrzeugeModel extends ListModel
 				'a.funkrufname LIKE ' . $search,
 				'a.beschreibung LIKE ' . $search,
 				'e.title LIKE ' . $search,
+				'e.name LIKE ' . $search,
 				'uc.name LIKE ' . $search, // created_by_name
 				'um.name LIKE ' . $search, // modified_by_name
 			];
