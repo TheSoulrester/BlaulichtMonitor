@@ -17,143 +17,152 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 class DisplayController extends BaseController
 {
-    protected $default_view = 'cpanel';
+	protected $default_view = 'cpanel';
 
-    public function migrate(): void
-    {
-        $this->checkToken();
+	/*
+	public function __construct($config = [], $factory = null, $app = null, $input = null)
+	{
+		parent::__construct($config, $factory, $app, $input);
+		// Alias für das Formular: task=display.cleantables -> cleanTables()
+		$this->registerTask('cleantables', 'cleanTables');
+	}
+	*/
 
-        $migrationService = new MigrationService();
-        $results          = $migrationService->migrateAll();
+	public function migrate(): void
+	{
+		$this->checkToken();
 
-        $message = '<div><h1><strong>' . Text::_('COM_BLAULICHTMONITOR_MIGRATION_COMPLETED') . '</strong></h1></div>';
+		$migrationService = new MigrationService();
+		$results          = $migrationService->migrateAll();
 
-        foreach ($results as $table => $tableResults) {
-            $success = array_filter($tableResults, fn ($msg) => str_starts_with($msg, '✅'));
-            $errors  = array_filter($tableResults, fn ($msg) => str_starts_with($msg, '❌'));
+		$message = '<div><h1><strong>' . Text::_('COM_BLAULICHTMONITOR_MIGRATION_COMPLETED') . '</strong></h1></div>';
 
-            $message .= '<div>';
-            $message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_TABLE') . '</strong><span>' . htmlspecialchars($table) . '</span></div>';
-            $message .= '<div>';
-            $message .= '<span>✅ ' . \count($success) . Text::_('COM_BLAULICHTMONITOR_SUCCESS') . '</span>';
-            $message .= '<span> - </span>';
-            if (!empty($errors)) {
-                $message .= '<span>❌ ' . \count($errors) . Text::_('COM_BLAULICHTMONITOR_ERROR') . '</span>';
-            } else {
-                $message .= '<span>' . Text::_('COM_BLAULICHTMONITOR_NO_ERRORS') . '</span>';
-            }
-            $message .= '</div>';
+		foreach ($results as $table => $tableResults) {
+			$success = array_filter($tableResults, fn($msg) => str_starts_with($msg, '✅'));
+			$errors  = array_filter($tableResults, fn($msg) => str_starts_with($msg, '❌'));
 
-            // Fehlerdetails als Liste
-            if (!empty($errors)) {
-                $message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_ERROR_DETAILS') . '</strong><ul>';
-                foreach ($errors as $err) {
-                    $message .= '<li>' . htmlspecialchars($err) . '</li>';
-                }
-                $message .= '</ul></div>';
-            }
+			$message .= '<div>';
+			$message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_TABLE') . '</strong><span>' . htmlspecialchars($table) . '</span></div>';
+			$message .= '<div>';
+			$message .= '<span>✅ ' . \count($success) . Text::_('COM_BLAULICHTMONITOR_SUCCESS') . '</span>';
+			$message .= '<span> - </span>';
+			if (!empty($errors)) {
+				$message .= '<span>❌ ' . \count($errors) . Text::_('COM_BLAULICHTMONITOR_ERROR') . '</span>';
+			} else {
+				$message .= '<span>' . Text::_('COM_BLAULICHTMONITOR_NO_ERRORS') . '</span>';
+			}
+			$message .= '</div>';
 
-            $message .= '</div>';
-        }
+			// Fehlerdetails als Liste
+			if (!empty($errors)) {
+				$message .= '<div><strong>' . Text::_('COM_BLAULICHTMONITOR_ERROR_DETAILS') . '</strong><ul>';
+				foreach ($errors as $err) {
+					$message .= '<li>' . htmlspecialchars($err) . '</li>';
+				}
+				$message .= '</ul></div>';
+			}
 
-        // Joomla unterstützt HTML in 'none' Messages, aber kein JS/CSS für Interaktivität!
-        $this->app->enqueueMessage($message, 'none');
-        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
-    }
+			$message .= '</div>';
+		}
 
-    public function cleanTables(): void
-    {
-        $this->checkToken();
+		// Joomla unterstützt HTML in 'none' Messages, aber kein JS/CSS für Interaktivität!
+		$this->app->enqueueMessage($message, 'none');
+		$this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+	}
 
-        $db     = \Joomla\CMS\Factory::getDbo();
-        $prefix = $db->getPrefix();
+	public function cleanTables(): void
+	{
+		$this->checkToken();
 
-        // Alle Tabellen mit "blaulichtmonitor" im Namen suchen
-        $db->setQuery("SHOW TABLES LIKE " . $db->quote($prefix . '%blaulichtmonitor%'));
-        $tables = $db->loadColumn();
+		$db     = \Joomla\CMS\Factory::getDbo();
+		$prefix = $db->getPrefix();
 
-        if (empty($tables)) {
-            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND'), 'info');
-            $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
-            return;
-        }
+		// Alle Tabellen mit "blaulichtmonitor" im Namen suchen
+		$db->setQuery("SHOW TABLES LIKE " . $db->quote($prefix . '%blaulichtmonitor%'));
+		$tables = $db->loadColumn();
 
-        $errors        = [];
-        $successTables = [];
-        foreach ($tables as $table) {
-            try {
-                $db->setQuery('DELETE FROM `' . $table . '`');
-                $db->execute();
-                $successTables[] = $table;
-            } catch (\Exception $e) {
-                $errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR_DETAIL', $table, $e->getMessage());
-            }
-        }
+		if (empty($tables)) {
+			$this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND'), 'info');
+			$this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+			return;
+		}
 
-        if (!empty($successTables)) {
-            $tableList = '<ul>';
-            foreach ($successTables as $table) {
-                $tableList .= '<li>' . htmlspecialchars($table) . '</li>';
-            }
-            $tableList .= '</ul>';
-            $this->app->enqueueMessage(
-                '<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_CLEANED') . '</strong>' . $tableList,
-                'success'
-            );
-        }
+		$errors        = [];
+		$successTables = [];
+		foreach ($tables as $table) {
+			try {
+				// TRUNCATE setzt AUTO_INCREMENT zurück
+				$db->setQuery('TRUNCATE TABLE ' . $db->quoteName($table))->execute();
+				$successTables[] = $table;
+			} catch (\Exception $e) {
+				$errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR_DETAIL', $table, $e->getMessage());
+			}
+		}
 
-        if (!empty($errors)) {
-            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR') . '<br>' . implode('<br>', $errors), 'error');
-        }
+		if (!empty($successTables)) {
+			$tableList = '<ul>';
+			foreach ($successTables as $table) {
+				$tableList .= '<li>' . htmlspecialchars($table) . '</li>';
+			}
+			$tableList .= '</ul>';
+			$this->app->enqueueMessage(
+				'<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_CLEANED') . '</strong>' . $tableList,
+				'success'
+			);
+		}
 
-        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
-    }
+		if (!empty($errors)) {
+			$this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_CLEAN_ERROR') . '<br>' . implode('<br>', $errors), 'error');
+		}
 
-    public function droptables(): void
-    {
-        $this->checkToken();
+		$this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+	}
 
-        $db     = \Joomla\CMS\Factory::getDbo();
-        $prefix = $db->getPrefix();
+	public function droptables(): void
+	{
+		$this->checkToken();
 
-        // Alle Tabellen mit "blaulichtmonitor" im Namen suchen
-        $db->setQuery("SHOW TABLES LIKE " . $db->quote($prefix . '%blaulichtmonitor%'));
-        $tables = $db->loadColumn();
+		$db     = \Joomla\CMS\Factory::getDbo();
+		$prefix = $db->getPrefix();
 
-        if (empty($tables)) {
-            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND') . ' ' . Text::_('COM_BLAULICHTMONITOR_NO_TABLES_DROPPED'), 'info');
-            $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
-            return;
-        }
+		// Alle Tabellen mit "blaulichtmonitor" im Namen suchen
+		$db->setQuery("SHOW TABLES LIKE " . $db->quote($prefix . '%blaulichtmonitor%'));
+		$tables = $db->loadColumn();
 
-        $successTables = [];
-        $errors        = [];
-        foreach ($tables as $table) {
-            try {
-                $db->setQuery('DROP TABLE IF EXISTS `' . $table . '`');
-                $db->execute();
-                $successTables[] = $table;
-            } catch (\Exception $e) {
-                $errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR_DETAIL', $table, $e->getMessage());
-            }
-        }
+		if (empty($tables)) {
+			$this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_NO_TABLES_FOUND') . ' ' . Text::_('COM_BLAULICHTMONITOR_NO_TABLES_DROPPED'), 'info');
+			$this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+			return;
+		}
 
-        if (!empty($successTables)) {
-            $tableList = '<ul>';
-            foreach ($successTables as $table) {
-                $tableList .= '<li>' . htmlspecialchars($table) . '</li>';
-            }
-            $tableList .= '</ul>';
-            $this->app->enqueueMessage(
-                '<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_DROPPED') . '</strong>' . $tableList,
-                'success'
-            );
-        }
+		$successTables = [];
+		$errors        = [];
+		foreach ($tables as $table) {
+			try {
+				$db->setQuery('DROP TABLE IF EXISTS `' . $table . '`');
+				$db->execute();
+				$successTables[] = $table;
+			} catch (\Exception $e) {
+				$errors[] = Text::sprintf('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR_DETAIL', $table, $e->getMessage());
+			}
+		}
 
-        if (!empty($errors)) {
-            $this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR') . '<br>' . implode('<br>', $errors), 'error');
-        }
+		if (!empty($successTables)) {
+			$tableList = '<ul>';
+			foreach ($successTables as $table) {
+				$tableList .= '<li>' . htmlspecialchars($table) . '</li>';
+			}
+			$tableList .= '</ul>';
+			$this->app->enqueueMessage(
+				'<strong>' . Text::_('COM_BLAULICHTMONITOR_TABLES_DROPPED') . '</strong>' . $tableList,
+				'success'
+			);
+		}
 
-        $this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
-    }
+		if (!empty($errors)) {
+			$this->app->enqueueMessage(Text::_('COM_BLAULICHTMONITOR_TABLES_DROP_ERROR') . '<br>' . implode('<br>', $errors), 'error');
+		}
+
+		$this->setRedirect('index.php?option=com_blaulichtmonitor&view=cpanel');
+	}
 }

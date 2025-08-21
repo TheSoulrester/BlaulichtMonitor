@@ -790,8 +790,80 @@ class MigrationService
 
 	/**
 	 * Migration der Einsatzbericht-Bilder
+	 * - Alle Bilder migrieren
+	 * - image -> filename (relativer Pfad)
+	 * - report_id -> einsatzbericht_id
+	 * - thumb -> thumbnail (relativer Pfad)
+	 * - state wird nicht übernommen
+	 * - created_by wird übernommen
+	 * - Duplikate (einsatzbericht_id + filename) werden übersprungen
 	 */
-	public function migrateEinsatzberichtBilder() {}
+	public function migrateEinsatzberichtBilder(): array
+	{
+		$db      = Factory::getDbo();
+		$results = [];
+
+		$query = $db->getQuery(true)
+			->select(['id', 'image', 'report_id', 'thumb', 'created_by'])
+			->from($db->qn('#__eiko_images'));
+		$db->setQuery($query);
+		$rows = $db->loadAssocList();
+
+		foreach ($rows as $row) {
+			$bildId    = (int)($row['id'] ?? 0);
+			$reportId  = (int)($row['report_id'] ?? 0);
+			$filename  = trim((string)($row['image'] ?? ''));
+			$thumbnail = $row['thumb'] ?? null;
+
+			if ($bildId <= 0 || $reportId <= 0 || $filename === '') {
+				$results[] = "⏭️ Übersprungen: Bild-ID {$bildId} (fehlende id/report_id/filename).";
+				continue;
+			}
+
+			// a) existiert ID schon?
+			$existsId = $db->getQuery(true)
+				->select('COUNT(*)')
+				->from($db->qn('#__blaulichtmonitor_einsatzbilder'))
+				->where('id = ' . $bildId);
+			$db->setQuery($existsId);
+			if ((int)$db->loadResult() > 0) {
+				$results[] = "ℹ️ Bereits vorhanden (ID): {$bildId}";
+				continue;
+			}
+
+			// b) Duplikat (einsatzbericht_id, filename)?
+			$dup = $db->getQuery(true)
+				->select('COUNT(*)')
+				->from($db->qn('#__blaulichtmonitor_einsatzbilder'))
+				->where('einsatzbericht_id = ' . $reportId)
+				->where('filename = ' . $db->q($filename));
+			$db->setQuery($dup);
+			if ((int)$db->loadResult() > 0) {
+				$results[] = "ℹ️ Bereits vorhanden: Einsatz {$reportId}, Datei {$filename}";
+				continue;
+			}
+
+			$insert = $db->getQuery(true)
+				->insert($db->qn('#__blaulichtmonitor_einsatzbilder'))
+				->columns(['id', 'einsatzbericht_id', 'filename', 'thumbnail', 'created_by'])
+				->values(
+					$bildId . ', ' .
+						$reportId . ', ' .
+						$db->q($filename) . ', ' .
+						$this->sqlValue($thumbnail, $db) . ', ' .
+						$this->sqlValue($row['created_by'] ?? null, $db)
+				);
+
+			try {
+				$db->setQuery($insert)->execute();
+				$results[] = "✅ Bild migriert: ID {$bildId}, Einsatz {$reportId}, Datei {$filename}";
+			} catch (\Exception $e) {
+				$results[] = "❌ Fehler Bild-ID {$bildId} ({$filename}): " . $e->getMessage();
+			}
+		}
+
+		return $results;
+	}
 
 	/**
 	 * Führt alle Migrationen aus
@@ -830,9 +902,7 @@ class MigrationService
 
 			// 5. Medien & Presse
 			'#__blaulichtmonitor_einsatzberichte_presse' => $this->migrateEinsatzberichtePresse(),
-
-			// Weitere Migrationen hier ergänzen, falls benötigt
-			//'#__blaulichtmonitor_einsatzbilder' => $this->migrateEinsatzberichtBilder(),
+			'#__blaulichtmonitor_einsatzbilder'          => $this->migrateEinsatzberichtBilder(),
 		];
 	}
 }
