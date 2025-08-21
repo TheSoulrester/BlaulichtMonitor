@@ -43,7 +43,7 @@
       <menu link="option=com_blaulichtmonitor&amp;view=einsatzkategorien">Einsatzkategorien</menu>
       <menu link="option=com_blaulichtmonitor&amp;view=organisationen">Organisationen</menu>
       <menu link="option=com_blaulichtmonitor&amp;view=einheiten">Einheiten</menu>
-      <menu link="option=com_blaulichtmonitor&amp;view=einsatzleiter">Einsatzleiter</menu>
+      <menu link="option=com_blaulichtmonitor&amp;view=einsatzleiterliste">Einsatzleiter</menu>
       <menu link="option=com_blaulichtmonitor&amp;view=einsatzfahrzeuge">Einsatzfahrzeuge</menu>
     </submenu>
 
