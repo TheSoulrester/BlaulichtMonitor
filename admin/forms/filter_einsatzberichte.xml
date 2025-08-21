@@ -11,7 +11,7 @@
   </fields>
   <fields name="list">
     <!-- Dropdown für Sortierung nach verschiedenen Spalten -->
-    <field name="fullordering" type="list" label="JGLOBAL_SORT_BY" default="a.alarmieurngszeit DESC" class="js-select-submit-on-change" validate="options">
+    <field name="fullordering" type="list" label="JGLOBAL_SORT_BY" default="a.alarmierungszeit DESC" class="js-select-submit-on-change" validate="options">
       <option value="">JGLOBAL_SORT_BY</option>
       <option value="a.alarmierungszeit ASC">Alarmierungszeit aufsteigend</option>
       <option value="a.alarmierungszeit DESC">Alarmierungszeit absteigend</option>

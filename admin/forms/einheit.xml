@@ -21,9 +21,9 @@
   <!-- Freitextfelder für Standort-Strasse -->
   <field name="standort_strasse" type="text" label="Standort Strasse" required="true" />
   <!-- Freitextfelder für Standort-Hausnummer -->
-  <field name="standort_hausnummer" type="text" label="Standort Hausnummer" required="true" />
+  <field name="standort_hausnummer" type="number" label="Standort Hausnummer" required="true" />
   <!-- Freitextfelder für Standort-PLZ -->
-  <field name="standort_plz" type="text" label="Standort PLZ" required="true" />
+  <field name="standort_plz" type="number" label="Standort PLZ" required="true" />
   <!-- Freitextfelder für Standort-Ort -->
   <field name="standort_ort" type="text" label="Standort Ort" required="true" />
   <!-- Freitextfelder für Organisation-ID -->
