@@ -120,7 +120,7 @@ if ($saveOrder) {
 												$serverPath = JPATH_ROOT . '/' . ltrim($item->icon_url, '/');
 												if (is_file($serverPath)) {
 													// Bild existiert
-													echo '<img src="' . htmlspecialchars($imgSrc) . '" alt="' . htmlspecialchars($item->title) . '" style="max-width:32px;max-height:32px;object-fit:contain;border-radius:4px;" loading="lazy" />';
+													echo '<img src="' . htmlspecialchars($imgSrc) . '" alt="' . htmlspecialchars($item->title) . '" style="max-width:56px;max-height:56px;object-fit:contain;border-radius:4px;" loading="lazy" />';
 												} else {
 													// Bild fehlt
 													echo '<span class="text-danger" title="Bilddatei nicht gefunden"><span class="icon-warning"></span> fehlt</span>';
