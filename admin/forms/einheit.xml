@@ -11,23 +11,27 @@
   <!-- Freitextfelder für Title -->
   <field name="title" type="text" label="Titel" required="true" />
   <!-- Freitextfelder für Name -->
-  <field name="name" type="text" label="Name" required="true" />
+  <field name="name" type="text" label="Name" required="false" />
   <!-- Freitextfelder für URL -->
-  <field name="url" type="url" label="URL" required="true" relative="true"/>
+  <field name="url" type="url" label="URL" required="true" relative="false"/>
   <!-- Freitextfelder für Beschreibung -->
   <field name="beschreibung" type="editor" label="Beschreibung" required="false" filter="safehtml" />
+
+
   <!-- Freitextfelder für Standort-Title -->
-  <field name="standort_title" type="text" label="Standort Titel" required="true" />
+  <field name="standort_title" type="text" label="Standort Titel" required="false" />
   <!-- Freitextfelder für Standort-Strasse -->
-  <field name="standort_strasse" type="text" label="Standort Strasse" required="true" />
+  <field name="standort_strasse" type="text" label="Standort Strasse" required="false" />
   <!-- Freitextfelder für Standort-Hausnummer -->
-  <field name="standort_hausnummer" type="number" label="Standort Hausnummer" required="true" />
+  <field name="standort_hausnummer" type="number" label="Standort Hausnummer" required="false" />
   <!-- Freitextfelder für Standort-PLZ -->
-  <field name="standort_plz" type="number" label="Standort PLZ" required="true" />
+  <field name="standort_plz" type="number" label="Standort PLZ" required="false" />
   <!-- Freitextfelder für Standort-Ort -->
-  <field name="standort_ort" type="text" label="Standort Ort" required="true" />
+  <field name="standort_ort" type="text" label="Standort Ort" required="false" />
+
+
   <!-- Freitextfelder für Organisation-ID -->
-  <field name="organisation_id" type="sql" label="Organisation" sql_select="o.*" sql_from="#__blaulichtmonitor_organisationen AS o" sql_group="title" sql_order="o.id ASC" key_field="id" value_field="title" required="true" />
+  <field name="organisation_id" type="sql" label="Organisation" sql_select="o.*" sql_from="#__blaulichtmonitor_organisationen AS o" sql_group="title" sql_order="o.id ASC" key_field="id" value_field="title" required="false" />
 </form>
 
 <!--

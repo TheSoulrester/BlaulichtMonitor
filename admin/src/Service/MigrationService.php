@@ -179,7 +179,7 @@ class MigrationService
 
 			$insert = $db->getQuery(true)
 				->insert($db->qn('#__blaulichtmonitor_einsatzarten'))
-				->columns(['id', 'title', 'colour_marker', 'icon_url', 'ordering', 'created_by', 'created'])
+				->columns(['id', 'title', 'color_marker', 'icon_url', 'ordering', 'created_by', 'created'])
 				->values(
 					$this->sqlValue($row['id'], $db) . ', ' .
 						$this->sqlValue($row['title'], $db) . ', ' .

@@ -28,7 +28,7 @@ $canOrder = $user->authorise('core.edit.state', 'com_blaulichtmonitor');
 $saveOrder = $listOrder == 'a.ordering';
 if ($saveOrder) {
 	$saveOrderingUrl = 'index.php?option=com_blaulichtmonitor&task=einsatzfahrzeuge.saveOrderAjax&tmpl=component';
-	HTMLHelper::_('draggablelist.draggable', 'fahrzeugeList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	HTMLHelper::_('draggablelist.draggable', 'einsatzfahrzeugeList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 ?>
 

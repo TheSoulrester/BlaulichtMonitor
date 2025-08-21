@@ -42,7 +42,7 @@ class EinsatzfahrzeugeController extends AdminController
 	 *
 	 * @return  \Joomla\CMS\MVC\Model\BaseDatabaseModel
 	 */
-	public function getModel($name = 'Einsatzfahrzeuge', $prefix = 'Administrator', $config = ['ignore_request' => true])
+	public function getModel($name = 'Einsatzfahrzeug', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

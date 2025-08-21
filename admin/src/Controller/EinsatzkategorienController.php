@@ -19,7 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-class EinsatkategorienController extends AdminController
+class EinsatzkategorienController extends AdminController
 {
 	/**
 	 * Prefix für Sprachstrings.
@@ -42,7 +42,7 @@ class EinsatkategorienController extends AdminController
 	 *
 	 * @return  \Joomla\CMS\MVC\Model\BaseDatabaseModel
 	 */
-	public function getModel($name = 'Einsatzkategorien', $prefix = 'Administrator', $config = ['ignore_request' => true])
+	public function getModel($name = 'Einsatzkategorie', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

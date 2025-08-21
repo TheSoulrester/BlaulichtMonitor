@@ -42,7 +42,7 @@ class OrganisationenController extends AdminController
 	 *
 	 * @return  \Joomla\CMS\MVC\Model\BaseDatabaseModel
 	 */
-	public function getModel($name = 'Organisationen', $prefix = 'Administrator', $config = ['ignore_request' => true])
+	public function getModel($name = 'Organisation', $prefix = 'Administrator', $config = ['ignore_request' => true])
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

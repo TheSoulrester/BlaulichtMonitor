@@ -11,6 +11,8 @@
   <!-- Freitextfelder für Title -->
   <field name="title" type="text" label="Titel" required="true" />
 
+  <field name="color_marker" type="color" default="#eee" format="rgba" label="Color Marker" description="Color Marker" />
+
   <!-- Bild -->
   <field name="icon_url" type="accessiblemedia" label="Einsatzart-Bild" directory="einsatzarten" required="false" />
 </form>

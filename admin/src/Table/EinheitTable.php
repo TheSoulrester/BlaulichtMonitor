@@ -35,6 +35,15 @@ class EinheitTable extends Table
 	public function bind($array, $ignore = '')
 	{
 		// Keine speziellen Felder für Einsatzarten nötig, aber Platz für spätere Anpassungen
+
+
+		// numerische Felder leere Eingaben -> NULL, sonst integer-casten
+		foreach (['standort_hausnummer', 'standort_plz'] as $field) {
+			if (isset($array[$field]) && $array[$field] === '') {
+				$array[$field] = null;
+			}
+		}
+
 		return parent::bind($array, $ignore);
 	}
 
