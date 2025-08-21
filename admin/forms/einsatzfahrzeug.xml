@@ -15,16 +15,13 @@
   <!-- Bild -->
   <field name="bild_url" type="accessiblemedia" label="Fahrzeug-Bild" directory="fahrzeuge" required="false" />
   <!-- URL -->
-  <field name="url" type="text" label="URL" required="false" />
-  <field name="in_dienst"
-       type="list"
-       label="Fahrzeug ist im Dienst"
-       default="1">
+  <field name="url" type="text" label="URL" relative="true" required="false" />
+  <field name="in_dienst" type="list" label="Fahrzeug ist im Dienst" default="1">
     <option value="1">Ja</option>
     <option value="0">Nein</option>
-</field>
-<!-- Einheiten ID -->
-<field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
+  </field>
+  <!-- Einheiten ID -->
+  <field name="einheiten_id" type="sql" label="Einheiten" multiple="multiple" sql_select="u.*" sql_from="#__blaulichtmonitor_einheiten AS u" sql_group="title" sql_order="u.ordering ASC" key_field="id" value_field="title" required="false" layout="joomla.form.field.list-fancy-select" class="inputbox" hint="Einheiten auswählen..." />
 
 
 </form>

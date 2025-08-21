@@ -20,8 +20,10 @@ class EinsatzfahrzeugeModel extends ListModel
 			$config['filter_fields'] = [
 				'id',
 				'a.id',
+				'funkrufname',
 				'a.funkrufname',
-				'a.title',
+				'beschreibung',
+				'a.beschreibung',
 				'ordering',
 				'a.ordering',
 			];
@@ -93,7 +95,8 @@ class EinsatzfahrzeugeModel extends ListModel
 
 			$where = [
 				'a.id LIKE ' . $search,
-				'a.title LIKE ' . $search,
+				'a.funkrufname LIKE ' . $search,
+				'a.beschreibung LIKE ' . $search,
 				'uc.name LIKE ' . $search, // created_by_name
 				'um.name LIKE ' . $search, // modified_by_name
 			];

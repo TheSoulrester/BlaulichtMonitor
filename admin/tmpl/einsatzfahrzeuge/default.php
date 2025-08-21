@@ -5,6 +5,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 
 /**
  * Template für die Einsatzarten-Übersicht im Backend.
@@ -70,6 +71,10 @@ if ($saveOrder) {
 									<th scope="col" class="text-center">
 										<?php echo HTMLHelper::_('searchtools.sort', 'ID', 'a.id', $listDirn, $listOrder); ?>
 									</th>
+									<!-- Image-Spalte -->
+									<th scope="col" class="text-center">
+										<?php echo Text::_('Bild'); ?>
+									</th>
 									<!-- Sortierbare Spalte: Title -->
 									<th scope="col" class="">
 										<?php echo HTMLHelper::_('searchtools.sort', 'Funkrufname', 'a.funkrufname', $listDirn, $listOrder); ?>
@@ -103,6 +108,26 @@ if ($saveOrder) {
 										<!-- Anzeige der Bericht-ID als Badge -->
 										<td class="text-center">
 											<?php echo '<span class="badge bg-primary border">#' . $item->id . '</span>'; ?>
+										</td><!-- Image anzeigen -->
+										<td class="text-center">
+											<?php
+											$imgSrc = '';
+											if (!empty($item->bild_url)) {
+												// Absoluten Pfad erzeugen
+												$imgSrc = Uri::root() . ltrim($item->bild_url, '/');
+												// Pfad auf dem Server prüfen
+												$serverPath = JPATH_ROOT . '/' . ltrim($item->bild_url, '/');
+												if (is_file($serverPath)) {
+													// Bild existiert
+													echo '<img src="' . htmlspecialchars($imgSrc) . '" alt="' . htmlspecialchars($item->funkrufname) . '" style="max-width:64px;max-height:64px;object-fit:contain;border-radius:4px;" loading="lazy" />';
+												} else {
+													// Bild fehlt
+													echo '<span class="text-danger" title="Bilddatei nicht gefunden"><span class="icon-warning"></span> fehlt</span>';
+												}
+											} else {
+												echo '<span class="text-muted">–</span>';
+											}
+											?>
 										</td>
 										<!-- Title mit Link zur Bearbeitung -->
 										<td>
@@ -110,16 +135,18 @@ if ($saveOrder) {
 												<?php echo $item->funkrufname; ?>
 											</a>
 										</td>
-										<!-- Erstellungsdatum und Ersteller (ausgeblendet) -->
+										<!-- Erstellungsdatum und Ersteller -->
 										<td>
 											<div class="d-flex flex-column">
 												<?php
-												$dt_created = \DateTime::createFromFormat('Y-m-d H:i:s', $item->created);
+												$dt_created = !empty($item->created) ? \DateTime::createFromFormat('Y-m-d H:i:s', $item->created) : false;
 												if ($dt_created) {
 													echo '<span>' . $dt_created->format('d.m.Y') . '</span>';
 													echo '<span>' . $dt_created->format('H:i') . ' Uhr</span>';
-												} else {
+												} elseif (!empty($item->created)) {
 													echo '<span>' . htmlspecialchars($item->created) . '</span>';
+												} else {
+													echo '<span>-</span>';
 												}
 												?>
 												<?php if (!empty($item->created_by_name)) : ?>
@@ -133,12 +160,14 @@ if ($saveOrder) {
 										<td>
 											<div class="d-flex flex-column">
 												<?php
-												$dt_modified = \DateTime::createFromFormat('Y-m-d H:i:s', $item->modified);
+												$dt_modified = !empty($item->modified) ? \DateTime::createFromFormat('Y-m-d H:i:s', $item->modified) : false;
 												if ($dt_modified) {
 													echo '<span>' . $dt_modified->format('d.m.Y') . '</span>';
 													echo '<span>' . $dt_modified->format('H:i') . ' Uhr</span>';
-												} else {
+												} elseif (!empty($item->modified)) {
 													echo '<span>' . htmlspecialchars($item->modified) . '</span>';
+												} else {
+													echo '<span>-</span>';
 												}
 												?>
 												<?php if (!empty($item->modified_by_name)) : ?>

@@ -21,7 +21,7 @@ class EinsatzfahrzeugModel extends AdminModel
 	public function getForm($data = [], $loadData = true)
 	{
 		$form = $this->loadForm(
-			'com_blaulichtmonitor.Einsatzfahrzeug',
+			'com_blaulichtmonitor.einsatzfahrzeug',
 			'einsatzfahrzeug',
 			[
 				'control'   => 'jform',
@@ -82,9 +82,9 @@ class EinsatzfahrzeugModel extends AdminModel
 	public function save($data)
 	{
 		if (isset($data['bild_url']) && is_array($data['bild_url'])) {
-        $rawPath = $data['bild_url']['imagefile'] ?? '';
-        $data['bild_url'] = explode('#', $rawPath)[0];
-    }
+			$rawPath = $data['bild_url']['imagefile'] ?? '';
+			$data['bild_url'] = explode('#', $rawPath)[0];
+		}
 		$db = Factory::getContainer()->get('DatabaseDriver');
 
 		// Daten aus dem Formular holen und ggf. trimmen
