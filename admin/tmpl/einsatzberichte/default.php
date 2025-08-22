@@ -15,7 +15,8 @@ use Joomla\CMS\Uri\Uri;
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('table.columns')
 	->useScript('multiselect')
-	->useScript('bootstrap.modal');
+	->useScript('bootstrap.modal')
+	->useScript('bootstrap.dropdown');
 
 // Benutzer/Sortierung
 $user      = Factory::getApplication()->getIdentity();
@@ -133,17 +134,59 @@ if (!empty($this->items)) {
 											if ($count === 0) {
 												$body = '<p class="text-muted mb-0">Keine Bilder vorhanden.</p>';
 											} else {
-												$body .= '<div class="container-fluid"><div class="row g-2">';
+												$body .= '<div class="container-fluid">';
+												$body .= '<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">';
+
 												foreach ($imgs as $img) {
+													$imgId    = (int) ($img['id'] ?? 0);
 													$thumbRel = $img['thumbnail'] ?: $img['filename'];
 													$thumbUrl = $siteRoot . ltrim((string) $thumbRel, '/');
 													$fullUrl  = $siteRoot . ltrim((string) $img['filename'], '/');
-													$body    .= '<div class="col-6 col-md-4 col-lg-3">';
-													$body    .= '<a href="' . htmlspecialchars($fullUrl, ENT_QUOTES) . '" target="_blank" rel="noopener">';
-													$body    .= '<img src="' . htmlspecialchars($thumbUrl, ENT_QUOTES) . '" class="img-fluid img-thumbnail" alt="">';
-													$body    .= '</a></div>';
+
+													$editUrl    = Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbild.edit&id=' . $imgId);
+													$deleteAction = Route::_('/administrator/index.php?option=com_blaulichtmonitor&task=einsatzbild.delete');
+
+													$body .= '<div class="col">';
+													$body .= '  <div class="position-relative bg-body border rounded overflow-hidden">';
+													$body .= '    <div class="ratio ratio-4x3">';
+													$body .= '      <img src="' . htmlspecialchars($thumbUrl, ENT_QUOTES) . '" alt="Bild #' . $imgId . '" class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover">';
+													$body .= '    </div>';
+
+													// Dezentes Aktionsmenü oben rechts (Dropdown)
+													$body .= '    <div class="position-absolute top-0 end-0 m-2 z-3">';
+													$body .= '      <div class="dropdown">';
+													$body .= '        <button class="btn btn-primary btn-sm p-1 lh-1 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Aktionen">';
+													$body .= '          <span class="icon-cog" aria-hidden="true"></span>';
+													$body .= '        </button>';
+													$body .= '        <ul class="dropdown-menu dropdown-menu-end">';
+													$body .= '          <li>';
+													$body .= '				<a class="dropdown-item d-flex align-items-center gap-2" href="' . htmlspecialchars($editUrl, ENT_QUOTES) . '">';
+													$body .= '					<span class="icon-edit" aria-hidden="true"></span>';
+													$body .= '					<span>Bearbeiten</span>';
+													$body .= '				</a>';
+													$body .= '			</li>';
+													$body .= '          <li>';
+													$body .= '            <form method="post" action="' . htmlspecialchars($deleteAction, ENT_QUOTES) . '" onsubmit="return confirm(\'Bild wirklich löschen?\')">';
+													$body .= '              <input type="hidden" name="id" value="' . $imgId . '">';
+													$body .=                    HTMLHelper::_('form.token');
+													$body .= '              <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">';
+													$body .= '					<span class="icon-trash" aria-hidden="true"></span>';
+													$body .= '					<span>Löschen</span>';
+													$body .= '				</button>';
+													$body .= '            </form>';
+													$body .= '          </li>';
+													$body .= '        </ul>';
+													$body .= '      </div>';
+													$body .= '    </div>';
+
+													// Klick aufs Bild: Original öffnen
+													$body .= '    <a href="' . htmlspecialchars($fullUrl, ENT_QUOTES) . '" target="_blank" rel="noopener" class="stretched-link" aria-label="Originalbild öffnen"></a>';
+													$body .= '  </div>';
+													$body .= '</div>';
 												}
-												$body .= '</div></div>';
+
+												$body .= '</div>'; // row
+												$body .= '</div>'; // container
 											}
 
 											echo HTMLHelper::_(
@@ -153,6 +196,7 @@ if (!empty($this->items)) {
 													'title' => 'Bilder zu Einsatz #' . (int) $item->id,
 													'modal-dialog-scrollable' => true,
 													'modal-dialog-centered'   => true,
+													'modal-dialog-class'      => 'modal-xl modal-fullscreen-sm-down',
 													'backdrop' => true,
 													'keyboard' => true,
 													'footer' => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>',
